@@ -8,7 +8,7 @@ const authAPI = {
   register: (values) => {
     return axiosClient.post("QuanLyNguoiDung/DangKy", {
       ...values,
-      maNhom: "GP05",
+      maNhom: "GP01",
     });
   },
 };

@@ -4,7 +4,7 @@ const movieAPI = {
   getMovies: () => {
     return axiosClient.get("QuanLyPhim/LayDanhSachPhim", {
       params: {
-        maNhom: "GP05",
+        maNhom: "GP00",
       },
     });
   },
@@ -54,9 +54,24 @@ const movieAPI = {
     for (let key in movie) {
       formData.append(key, movie[key]);
     }
-    formData.append("maNhom", "GP05");
+    formData.append("maNhom", "GP01");
 
     return axiosClient.post("QuanLyPhim/ThemPhimUploadHinh", formData);
+  },
+
+  createShowtime: (movie) => {
+    return axiosClient.post("QuanLyDatVe/TaoLichChieu", movie)
+  },
+
+
+  getCinema: () => {
+    return axiosClient.get("QuanLyRap/LayThongTinHeThongRap")
+  },
+
+  getSubCinema: (ec) => {
+    console.log(ec)
+    return axiosClient.get("QuanLyRap/LayThongTinCumRapTheoHeThong", { params: { maNhom: 'GP01', maHeThongRap: `${ec}` } })
+
   },
 };
 
