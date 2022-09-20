@@ -15,9 +15,9 @@ const CreateShowTime = () => {
     const [edit, setEdit] = useState(null)
     const [change, setChange] = useState(false)
 
-    const { data: cinema } = useRequest(() => movieAPI.getCinema(), { refreshDeps: [change] })
-    const { data: movie, isLoading, error } = useRequest(() => movieAPI.getMovieDetails(movieId), { refreshDeps: [change] })
-    const { data: subCinema } = useRequest(() => movieAPI.getSubCinema(edit?.maHeThongRap), { refreshDeps: [edit?.maHeThongRap] })
+    const { data: cinema } = useRequest(() => movieAPI.getCinema(), { deps: [change] })
+    const { data: movie, isLoading, error } = useRequest(() => movieAPI.getMovieDetails(movieId), { deps: [change] })
+    const { data: subCinema } = useRequest(() => movieAPI.getSubCinema(edit?.maHeThongRap), { deps: [edit?.maHeThongRap] })
 
     useEffect(() => {
         setEdit({ tenHeThongRap: cinema?.[0].tenHeThongRap, maHeThongRap: cinema?.[0].maHeThongRap })
@@ -262,7 +262,7 @@ const CreateShowTime = () => {
                     </div>
 
 
-                    <div className='d-flex justify-content-center'>
+                    <div className='d-flex justify-content-center mb-4'>
                         <Button
                             style={{ width: '25em', height: '3em' }}
                             type='primary'

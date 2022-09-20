@@ -54,7 +54,7 @@ const User = () => {
     data: users,
     isLoading,
     error,
-  } = useRequest(() => userAPI.getUsers(), { refreshDeps: [change] })
+  } = useRequest(() => userAPI.getUsers(), { deps: [change] })
 
 
 

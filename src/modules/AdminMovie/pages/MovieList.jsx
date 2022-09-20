@@ -35,7 +35,7 @@ const MovieList = () => {
     data: movies,
     isLoading,
     error,
-  } = useRequest(() => movieAPI.getMovies(), { refreshDeps: [change] })
+  } = useRequest(() => movieAPI.getMovies(), { deps: [change] })
 
   const onSubmit = async (values) => {
     try {
