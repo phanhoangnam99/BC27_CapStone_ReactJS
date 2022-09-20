@@ -5,7 +5,7 @@ import {
     TeamOutlined,
     UserOutlined,
 } from '@ant-design/icons';
-import { Avatar, Breadcrumb, Button, Layout, Menu, Popover, Row } from 'antd';
+import { Avatar, Breadcrumb, Button, Layout, Menu, notification, Popover, Row } from 'antd';
 import Col from 'antd/es/grid/col';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -59,6 +59,9 @@ const AdminLayout = () => {
         return <Navigate to='/login' />
     }
     else if (user?.maLoaiNguoiDung != "QuanTri") {
+        notification.error({
+            message:'Bạn không phải là quản trị viên'
+        })
         return <Navigate to='/' />
     }
 
