@@ -4,7 +4,7 @@ const movieAPI = {
   getMovies: () => {
     return axiosClient.get("QuanLyPhim/LayDanhSachPhim", {
       params: {
-        maNhom: "GP01",
+        maNhom: "GP00",
       },
     });
   },
@@ -54,7 +54,7 @@ const movieAPI = {
     for (let key in movie) {
       formData.append(key, movie[key]);
     }
-    formData.append("maNhom", "GP01");
+    formData.append("maNhom", "GP00");
 
     return axiosClient.post("QuanLyPhim/ThemPhimUploadHinh", formData);
   },

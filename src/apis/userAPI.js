@@ -2,7 +2,7 @@ import axiosClient from "./axiosClient";
 
 
 
-const MaNhom = "GP01"
+const MaNhom = "GP00"
 const userAPI = {
    getUsers: () => {
       return axiosClient.get(`QuanLyNguoiDung/LayDanhSachNguoiDung/`, { params: { MaNhom: MaNhom } })
