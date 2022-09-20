@@ -1,0 +1,30 @@
+.ant-layout-content {
+  background: #0a2029;
+  color: aliceblue;
+  font-size: 18px;
+
+  .logo {
+    img {
+      width: 120px;
+      height: 120px;
+    }
+
+  }
+}
+
+.container {
+  display: flex;
+}
+
+.nameRap {
+  font-size: 24px;
+  font-weight: bold;
+  margin: 35px 15px 35px 15px;
+}
+
+.rapInfo-Name {
+  img {
+    width: 80px;
+    height: 80px;
+  }
+}

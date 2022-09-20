@@ -1,0 +1,8 @@
+.cinema {
+  background-image: url("https://img.freepik.com/free-vector/open-clapper-board-with-film-strip-background-design_1017-26102.jpg?w=2000");
+  background-size: cover;
+}
+
+.cinemaReal {
+  background-color: rgba(0, 0, 0, 0.6);
+}
