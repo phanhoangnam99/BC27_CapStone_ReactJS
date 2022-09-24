@@ -1,48 +1,103 @@
 import axiosClient from "apis/axiosClient";
 import movieAPI from "apis/movieAPI";
 import useRequest from "hooks/useRequest";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import "./cinemaDetail.scss";
 
-const CinemaDetail = ({ cinemaId }) => {
-  const [data, setData] = useState(null);
+const CinemaDetail = ({ cinema }) => {
+  const [data, setdata] = useState(null);
+  const [selectCine, setSelectCine] = useState();
+  console.log(selectCine);
 
-const [change,setChange] = useState(false)
-  console.log(data);
+  // useEffect(() => {
+  //   window.location.reload();
+  // }, [cinema]);
 
   useEffect(() => {
-    setData(null);
-    setChange(!change);
-    getCine()
-  },[cinemaId] );
-
+    getCine(cinema);
+  }, [cinema]);
+  // const {
+  //   data: cinemaInfo,
+  //   isLoading,
+  //   error,
+  // } = useRequest(() => movieAPI.getCinemaDetails(cinemaId));
+  // console.log(cinemaInfo);
   const getCine = async () => {
     try {
       const content = await axiosClient.get(
-        "QuanLyRap/LayThongTinCumRapTheoHeThong",
+        "QuanLyRap/LayThongTinLichChieuHeThongRap",
         {
           params: {
-            maHeThongRap: cinemaId,
+            maHeThongRap: cinema,
           },
         }
       );
-      setData(content);
-      console.log(content);
+      setdata(content);
     } catch (error) {
       console.log(error);
     }
   };
 
-  // const {
-  //   data: cinemaDetail,
-  //   isLoading,
-  //   error,
-  // } = useRequest(() => movieAPI.getCinemaDetails(cinemaId), { isManual: true,deps:[change] });
+  const filterMovie = (cine) => {
+    const listMovie = data.map((cinema) => {
+      return cinema.lstCumRap.map((cinemaId) => {
+        return cinemaId;
+      });
+    });
+    const updateList = listMovie.filter((x) => x.maCumRap === cine);
+    console.log(updateList);
+  };
 
-  // if (!cinemaId) {
-  //   return null;
-  // }
+  console.log(data);
 
-  return <>alo</>;
+  if (!data) {
+    return null;
+  }
+  // const cine = cinemaInfo.tenCumRap
+  // console.log(cine)
+  return (
+    <div className="cinemaDetail">
+      <table className="table">
+        {data.map((cine) => {
+          return (
+            <tbody>
+              <tr key={cine.maHeThongRap}>
+                <td>
+                  <h1>{cine.tenHeThongRap}</h1>
+                </td>
+                ;
+              </tr>
+              {cine.lstCumRap.map((list) => {
+                return (
+                  <>
+                    <tr>
+                      <td>
+                        <img
+                          src={list.hinhAnh}
+                          alt=""
+                          style={{ width: "150px", height: "150px" }}
+                        />
+                      </td>
+                      <td>
+                        <h3>{list.tenCumRap}</h3>
+                        <p>{list.diaChi}</p>
+                        <button
+                          className="btn btn-warning"
+                          onClick={() => filterMovie(list.maCumRap)}
+                        >
+                          Chi tiết
+                        </button>
+                      </td>
+                    </tr>
+                  </>
+                );
+              })}
+            </tbody>
+          );
+        })}
+      </table>
+    </div>
+  );
 };
 
 export default CinemaDetail;

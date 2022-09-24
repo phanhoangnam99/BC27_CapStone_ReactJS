@@ -33,66 +33,87 @@ const Showtimes = ({ movieId }) => {
   };
 
   const movieTicket = (ticketId) => {
-    navigate(`/ticket/${ticketId}`)
+    navigate(`/ticket/${ticketId}`);
   };
   if (!filter) {
     return null;
   }
   return (
-    <div className="showTime">
-      {rap.map((cinema) => {
-        return (
-          <div className="container">
-            <div className="logo">
-              <img
-                src={cinema.logo}
-                alt={cinema.maCumRap}
+    <div className="showTime container">
+      <table className="table">
+        <thead>
+          <tr>
+            <th scope="col">Hệ thống rạp chiếu</th>
+            <th scope="col">Địa điểm</th>
+            <th scope="col">Khung giờ chiếu</th>
+          </tr>
+        </thead>
+      </table>
+      <tbody>
+        {rap.map((cinema) => {
+          return (
+            <tr key={cinema.maCumRap}>
+              <td
                 onClick={() => cinemaDetail(cinema.maHeThongRap)}
-              />
-            </div>
-            <div className="nameRap">
-              <p>{cinema.tenHeThongRap}</p>
-            </div>
+                className="logo"
+                style={{ display: "flex" }}
+              >
+                <div>
+                  <img src={cinema.logo} alt={cinema.maCumRap} />
+                </div>
 
-            {displayFilter && (
-              <div>
-                {filter.map((cumRap) => {
-                  return (
-                    <div className="rapInfo">
-                      {cumRap.cumRapChieu.map((thongTinRap) => {
-                        return (
-                          <>
-                            <div className="rapInfo-Name">
-                              <div></div>
-                              <img src={thongTinRap.hinhAnh} alt="" />
-                              <span onClick={() => setTime(true)}>
-                                {thongTinRap.tenCumRap}
-                              </span>
-                              <span>{thongTinRap.diaChi}</span>
-                              {time &&
-                                thongTinRap.lichChieuPhim.map((dayTime) => {
-                                  return (
-                                    <div
-                                      onClick={() =>
-                                        movieTicket(dayTime.maLichChieu)
-                                      }
-                                    >
-                                      {dayTime.ngayChieuGioChieu}
-                                    </div>
-                                  );
-                                })}
-                            </div>
-                          </>
-                        );
-                      })}
-                    </div>
-                  );
-                })}
-              </div>
-            )}
-          </div>
-        );
-      })}
+                <div className="nameRap">
+                  <p>{cinema.tenHeThongRap}</p>
+                </div>
+              </td>
+
+              {displayFilter && (
+                <td>
+                  <div>
+                    {filter.map((cumRap) => {
+                      return (
+                        <div className="rapInfo">
+                          {cumRap.cumRapChieu.map((thongTinRap) => {
+                            return (
+                              <>
+                                <div
+                                  onClick={() => setTime(true)}
+                                  className="rapInfo-Name"
+                                >
+                                  <img src={thongTinRap.hinhAnh} alt="" />
+                                  <span>{thongTinRap.tenCumRap}</span>
+                                  <span>{thongTinRap.diaChi}</span>
+
+                                  <div className="time">
+                                    {time &&
+                                      thongTinRap.lichChieuPhim.map(
+                                        (dayTime) => {
+                                          return (
+                                            <div
+                                              onClick={() =>
+                                                movieTicket(dayTime.maLichChieu)
+                                              }
+                                            >
+                                              {dayTime.ngayChieuGioChieu}
+                                            </div>
+                                          );
+                                        }
+                                      )}
+                                  </div>
+                                </div>
+                              </>
+                            );
+                          })}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </td>
+              )}
+            </tr>
+          );
+        })}
+      </tbody>
     </div>
   );
 };
