@@ -8,6 +8,7 @@ import AuthLayout from "components/AuthLayout";
 import CheckoutRoute from "routes/CheckoutRoute";
 import CreateShowTime from 'modules/AdminMovie/pages/CreateShowTime';
 import AdminLayout from "components/AdminLayout"
+import Success from "modules/Ticket/Success";
 const User = lazy(() => import("modules/AdminMovie/pages/User"));
 
 // Không import trực tiếp các pages, vì nó sẽ được tải tất cả ở lần đầu tiên
@@ -70,6 +71,7 @@ function App() {
               </CheckoutRoute>
             }
           />
+          <Route path="ticket/success" element={<Success />}/>
         </Route>
 
         <Route path="/" element={<AuthLayout />}>

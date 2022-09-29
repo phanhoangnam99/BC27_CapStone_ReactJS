@@ -69,10 +69,13 @@ const movieAPI = {
   },
 
   getSubCinema: (ec) => {
-    console.log(ec)
     return axiosClient.get("QuanLyRap/LayThongTinCumRapTheoHeThong", { params: { maNhom: 'GP01', maHeThongRap: `${ec}` } })
 
   },
+
+  bookTicket: (values) => {
+    return axiosClient.post("QuanLyDatVe/DatVe", values)
+  }
 };
 
 export default movieAPI;

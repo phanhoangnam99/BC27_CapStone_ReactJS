@@ -19,6 +19,11 @@ const AddMovie = () => {
   const [imgPreview, setImgPreview] = useState("");
 
   const { form } = Form.useForm()
+
+  const { data: handleAddMovie } = useRequest(
+    (values) => movieAPI.addMovie(values),
+    { isManual: true }
+  );
   const { register, handleSubmit, setValue, control } = useForm({
     defaultValues: {
       tenPhim: "",
@@ -31,10 +36,6 @@ const AddMovie = () => {
     mode: "onTouched",
   });
 
-  const { data: handleAddMovie } = useRequest(
-    (values) => movieAPI.addMovie(values),
-    { isManual: true }
-  );
 
   const onSubmit = async (values) => {
     try {
@@ -147,7 +148,7 @@ const AddMovie = () => {
 
         <div className='d-flex justify-content-center'>
           <Button
-          style={{width:'25em',height:'3em'}}
+            style={{ width: '25em', height: '3em' }}
             type='primary'
             htmlType='submit'
 
@@ -158,9 +159,9 @@ const AddMovie = () => {
 
       </form>
 
-<br></br>
-<br></br>
-<br></br>
+      <br></br>
+      <br></br>
+      <br></br>
 
     </Content>
 

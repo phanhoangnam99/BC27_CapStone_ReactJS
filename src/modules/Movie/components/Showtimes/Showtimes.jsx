@@ -17,6 +17,7 @@ const Showtimes = ({ movieId }) => {
   const [time, setTime] = useState(false);
   const navigate = useNavigate();
 
+
   console.log(filter);
 
   if (!lichChieus) {
