@@ -3,6 +3,7 @@ import useRequest from "hooks/useRequest";
 import React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Moment from "react-moment"
 import "./showtime.scss";
 
 const Showtimes = ({ movieId }) => {
@@ -40,7 +41,7 @@ const Showtimes = ({ movieId }) => {
   }
   return (
     <div className="showTime container">
-      <table className="table">
+      <table className="table" style={{color: "white"}}>
         <thead>
           <tr>
             <th scope="col">Hệ thống rạp chiếu</th>
@@ -48,72 +49,74 @@ const Showtimes = ({ movieId }) => {
             <th scope="col">Khung giờ chiếu</th>
           </tr>
         </thead>
-      </table>
-      <tbody>
-        {rap.map((cinema) => {
-          return (
-            <tr key={cinema.maCumRap}>
-              <td
-                onClick={() => cinemaDetail(cinema.maHeThongRap)}
-                className="logo"
-                style={{ display: "flex" }}
-              >
-                <div>
-                  <img src={cinema.logo} alt={cinema.maCumRap} />
-                </div>
-
-                <div className="nameRap">
-                  <p>{cinema.tenHeThongRap}</p>
-                </div>
-              </td>
-
-              {displayFilter && (
-                <td>
+        <tbody>
+          {rap.map((cinema) => {
+            return (
+              <tr key={cinema.maCumRap}>
+                <td
+                  onClick={() => cinemaDetail(cinema.maHeThongRap)}
+                  className="logo"
+                  style={{ display: "flex" }}
+                >
                   <div>
-                    {filter.map((cumRap) => {
-                      return (
-                        <div className="rapInfo">
-                          {cumRap.cumRapChieu.map((thongTinRap) => {
-                            return (
-                              <>
-                                <div
-                                  onClick={() => setTime(true)}
-                                  className="rapInfo-Name"
-                                >
-                                  <img src={thongTinRap.hinhAnh} alt="" />
-                                  <span>{thongTinRap.tenCumRap}</span>
-                                  <span>{thongTinRap.diaChi}</span>
+                    <img src={cinema.logo} alt={cinema.maCumRap} />
+                  </div>
 
-                                  <div className="time">
-                                    {time &&
-                                      thongTinRap.lichChieuPhim.map(
-                                        (dayTime) => {
-                                          return (
-                                            <div
-                                              onClick={() =>
-                                                movieTicket(dayTime.maLichChieu)
-                                              }
-                                            >
-                                              {dayTime.ngayChieuGioChieu}
-                                            </div>
-                                          );
-                                        }
-                                      )}
-                                  </div>
-                                </div>
-                              </>
-                            );
-                          })}
-                        </div>
-                      );
-                    })}
+                  <div className="nameRap">
+                    <p>{cinema.tenHeThongRap}</p>
                   </div>
                 </td>
-              )}
-            </tr>
-          );
-        })}
-      </tbody>
+
+                {displayFilter && (
+                  <td>
+                    <div>
+                      {filter.map((cumRap) => {
+                        return (
+                          <div className="rapInfo">
+                            {cumRap.cumRapChieu.map((thongTinRap) => {
+                              return (
+                                <>
+                                  <div
+                                    onClick={() => setTime(true)}
+                                    className="rapInfo-Name"
+                                  >
+                                    <img src={thongTinRap.hinhAnh} alt="" />
+                                    <span>{thongTinRap.tenCumRap}</span>
+                                    <span>{thongTinRap.diaChi}</span>
+
+                                    <div className="time">
+                                      {time &&
+                                        thongTinRap.lichChieuPhim.map(
+                                          (dayTime) => {
+                                            return (
+                                              <div
+                                                onClick={() =>
+                                                  movieTicket(
+                                                    dayTime.maLichChieu
+                                                  )
+                                                }
+                                              >
+                                                <Moment>{dayTime.ngayChieuGioChieu}</Moment>
+                                              </div>
+                                            );
+                                          }
+                                        )}
+                                    </div>
+                                  </div>
+                                </>
+                              );
+                            })}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </td>
+                )}
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
     </div>
   );
 };
