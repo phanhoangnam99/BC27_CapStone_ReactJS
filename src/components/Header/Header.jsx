@@ -1,5 +1,5 @@
 import { Avatar, Button, Popover } from "antd";
-import React from "react";
+import {useRef} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate, useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -27,7 +27,6 @@ const Header = () => {
             alt=""
           />
           <span onClick={() => navigate('/')}>Homepage</span>
-          <span>Movies</span>
           <span onClick={() => navigate('/login')}>Login</span>
           <span onClick={() => navigate('/register')} > Register</span>
           <span onClick={() => navigate('/admin')} > Chuyển qua trang Admin</span>

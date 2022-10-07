@@ -14,6 +14,7 @@ import "react-slideshow-image/dist/styles.css";
 import Featured from "components/featured/Featured";
 import { Modal, Typography, Button } from "@mui/material";
 import { Box } from "@mui/system";
+import "./banner.scss";
 
 const TRAILERS = [
   "https://www.youtube.com/watch?v=L7ZBrFWVseU",
@@ -79,9 +80,21 @@ const Banner = () => {
                       playing
                     />
                   </Typography>
-                  <Button variant="contained" onClick={() => setOpen(false)}>
-                    Click me
-                  </Button>
+                  <Box
+                    sx={{
+                      position: "absolute",
+                      right: -100,
+                      top: -10,
+                    }}
+                  >
+                    <Button
+                      variant="contained"
+                      color="error"
+                      onClick={() => setOpen(false)}
+                    >
+                      X
+                    </Button>
+                  </Box>
                 </Box>
               </Modal>
               <img
@@ -93,7 +106,6 @@ const Banner = () => {
                 width="100%"
                 height="600px"
               />
-              <button onClick={()=>setOpen(true)} className="btn btn-success">Play</button>
             </>
           );
         })}

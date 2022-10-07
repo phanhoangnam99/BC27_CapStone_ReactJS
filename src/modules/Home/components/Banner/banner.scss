@@ -1,0 +1,17 @@
+
+
+.buttontrailer {
+    // position: absolute;
+    // bottom: 50%;
+    // left: 50%;
+    display: none;
+    
+}
+
+.alo{
+    &:hover{
+        .buttontrailer{
+            display: block;
+        }
+    }
+}

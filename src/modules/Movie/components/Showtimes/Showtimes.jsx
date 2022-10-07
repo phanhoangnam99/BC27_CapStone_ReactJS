@@ -3,7 +3,7 @@ import useRequest from "hooks/useRequest";
 import React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Moment from "react-moment"
+import Moment from "react-moment";
 import "./showtime.scss";
 
 const Showtimes = ({ movieId }) => {
@@ -16,13 +16,14 @@ const Showtimes = ({ movieId }) => {
   const [displayFilter, setDisplayFilter] = useState(false);
   const [time, setTime] = useState(false);
   const navigate = useNavigate();
-
+  const [location, setLocation] = useState(true);
 
   console.log(filter);
 
   if (!lichChieus) {
     return null;
   }
+
   console.log(lichChieus);
   const rap = lichChieus.heThongRapChieu;
   console.log(rap);
@@ -42,12 +43,11 @@ const Showtimes = ({ movieId }) => {
   }
   return (
     <div className="showTime container">
-      <table className="table" style={{color: "white"}}>
+      <table className="table" style={{ color: "white" }}>
         <thead>
           <tr>
             <th scope="col">Hệ thống rạp chiếu</th>
             <th scope="col">Địa điểm</th>
-            <th scope="col">Khung giờ chiếu</th>
           </tr>
         </thead>
         <tbody>
@@ -65,6 +65,7 @@ const Showtimes = ({ movieId }) => {
 
                   <div className="nameRap">
                     <p>{cinema.tenHeThongRap}</p>
+                    <button className="btn btn-outline-warning">Địa chỉ</button>
                   </div>
                 </td>
 
@@ -81,24 +82,39 @@ const Showtimes = ({ movieId }) => {
                                     onClick={() => setTime(true)}
                                     className="rapInfo-Name"
                                   >
-                                    <img src={thongTinRap.hinhAnh} alt="" />
-                                    <span>{thongTinRap.tenCumRap}</span>
-                                    <span>{thongTinRap.diaChi}</span>
-
+                                    <div>
+                                      <img src={thongTinRap.hinhAnh} alt="" />
+                                      <span>{thongTinRap.tenCumRap}</span>
+                                    </div>
+                                    <div>
+                                      <span>{thongTinRap.diaChi}</span>
+                                      <button style={{marginLeft:"50px"}} className="btn btn-outline-warning">
+                                        Giờ chiếu
+                                      </button>
+                                    </div>
                                     <div className="time">
                                       {time &&
                                         thongTinRap.lichChieuPhim.map(
                                           (dayTime) => {
                                             return (
-                                              <div
-                                                onClick={() =>
-                                                  movieTicket(
-                                                    dayTime.maLichChieu
-                                                  )
-                                                }
-                                              >
-                                                <Moment>{dayTime.ngayChieuGioChieu}</Moment>
-                                              </div>
+                                              <>
+                                                <div>
+                                                  <Moment>
+                                                    {dayTime.ngayChieuGioChieu}
+                                                  </Moment>
+                                                  <button style={{marginLeft:"50px"}}
+                                                    onClick={() =>
+                                                      movieTicket(
+                                                        dayTime.maLichChieu
+                                                      )
+                                                    }
+                                                    className="btn btn-warning"
+                                                  >
+                                                    Đặt vé
+                                                  </button>
+                                                </div>
+
+                                              </>
                                             );
                                           }
                                         )}

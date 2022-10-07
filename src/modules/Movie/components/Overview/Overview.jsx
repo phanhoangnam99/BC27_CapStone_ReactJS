@@ -19,7 +19,7 @@ const Overview = ({ movieId }) => {
   const handleShow = () => setShow(true);
   const [open, setOpen] = useState(false);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const {
     data: movie,
@@ -82,9 +82,19 @@ const Overview = ({ movieId }) => {
               playing
             />
           </Typography>
-          <Button variant="contained" onClick={() => setOpen(false)}>
-            Click me
-          </Button>
+          <Box sx={{
+            position:'absolute',
+            right: -100,
+            top: -10
+          }}>
+            <Button
+              variant="contained"
+              color="error"
+              onClick={() => setOpen(false)}
+            >
+              X
+            </Button>
+          </Box>
         </Box>
       </Modal>
     </MoviesDetail>
@@ -94,6 +104,10 @@ const Overview = ({ movieId }) => {
 export default Overview;
 
 const MoviesDetail = styled.div`
+  .buttonMate {
+    position: absolute;
+    top: 10px;
+  }
   .overview {
     .overmain {
       position: relative;

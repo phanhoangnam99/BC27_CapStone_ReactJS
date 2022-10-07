@@ -5,10 +5,7 @@ import { useRef, useState } from "react";
 import useRequest from "hooks/useRequest";
 import movieAPI from "apis/movieAPI";
 import { useEffect } from "react";
-import { FaPlay } from "react-icons/fa";
-import { Modal, Typography, Button } from "@mui/material";
-import { Box } from "@mui/system";
-import ReactPlayer from "react-player";
+
 
 const MovieShowing = () => {
   // useNavigate là một hook dùng để điều hướng url
@@ -69,10 +66,12 @@ const MovieShowing = () => {
         {movies?.map((movie) => {
           return (
             <div
+              ref={movieRef}
               key={movie.maPhim}
               className="movieItem"
               onClick={() => goToMovie(movie.maPhim)}
               draggable="false"
+              style={{cursor:"pointer"}}
             >
               <img
                 src={movie.hinhAnh}
@@ -85,15 +84,9 @@ const MovieShowing = () => {
                 //   setStyle(setStyle(false));
                 
               />
-              {/* {style && (
-                <ButtonDesign onClick={()=>setOpen(true)}>
-                  <button className="btn btn-outline-light">
-                    <FaPlay />
-                  </button>
-                </ButtonDesign>
-              )} */}
+            
               <div className="movieName">{movie.tenPhim}</div>
-              <button onClick={() => goToMovie(movie.maPhim)}>Chi tiết</button>
+              <button className="chitiet" onClick={() => goToMovie(movie.maPhim)}>Chi tiết</button>
             </div>
           );
         })}
@@ -135,6 +128,13 @@ const MovieContainer = styled.div`
   position: relative;
   width: 100%;
   height: 100%;
+  .chitiet{
+    background-color: #ffff;
+    position: relative;
+    top: -300px;
+    right: -40%;
+    display: none;
+  }
   .btnLeft {
     position: absolute;
     top: 50%;
@@ -226,6 +226,10 @@ const MoviesSlider = styled.div`
       opacity: 1;
       transform: scale(1.1);
       z-index: 10;
+      /* .chitiet{
+        display: block;
+        transition: all 0.3s linear;
+      } */
     }
     img {
       width: 100%;
