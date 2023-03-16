@@ -6,7 +6,7 @@ const axiosClient = axios.create({
   baseURL: "https://movienew.cybersoft.edu.vn/api/",
   headers: {
     TokenCybersoft:
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0ZW5Mb3AiOiJOb2RlanMgMjQiLCJIZXRIYW5TdHJpbmciOiIwOC8wNC8yMDIzIiwiSGV0SGFuVGltZSI6IjE2ODA5MTIwMDAwMDAiLCJuYmYiOjE2NjQyMTE2MDAsImV4cCI6MTY4MTA1OTYwMH0.HQfkAVQ_C4qH8T3vLwdtQfqQMRnagp260JXmrMN5lVs",
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0ZW5Mb3AiOiJCb290Y2FtcCAzMiIsIkhldEhhblN0cmluZyI6IjE1LzA0LzIwMjMiLCJIZXRIYW5UaW1lIjoiMTY4MTUxNjgwMDAwMCIsIm5iZiI6MTY1MzkzMDAwMCwiZXhwIjoxNjgxNjY0NDAwfQ.oR9K8iSTqbo-t0Q_a-WFnKePPaMAr7sdlgR5xKAtQWA",
   },
 });
 
