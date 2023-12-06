@@ -1,13 +1,13 @@
-import { Breadcrumb, Button, Input, Layout, Modal, notification, Select, Table, Tooltip } from 'antd'
+import { Breadcrumb, Button, Input,  Modal, notification, Select, Table, Tooltip } from 'antd'
 import { Content, Footer } from 'antd/lib/layout/layout'
 import axiosClient from 'apis/axiosClient'
 import userAPI from 'apis/userAPI'
 import useRequest from 'hooks/useRequest'
 import React, { useState } from 'react'
-import { Controller, useForm } from 'react-hook-form'
+import {  useForm } from 'react-hook-form'
 import uuid from 'react-uuid'
 import AddUserModal from './AddUserModal'
-import { EditOutlined, DeleteOutlined, CalendarOutlined } from '@ant-design/icons';
+import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 
 
 
@@ -52,8 +52,7 @@ const User = () => {
 
   const {
     data: users,
-    isLoading,
-    error,
+    
   } = useRequest(() => userAPI.getUsers(), { deps: [change] })
 
 
@@ -178,12 +177,7 @@ const User = () => {
 
 
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    control
-  } = useForm({
+   useForm({
     defaultValues: {
       taiKhoan: "",
       matKhau: "",

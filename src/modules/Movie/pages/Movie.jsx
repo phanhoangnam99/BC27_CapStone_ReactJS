@@ -1,7 +1,7 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 
-import Overview from "../components/Overview";
+// import Overview from "../components/Overview";
 import Showtimes from "../components/Showtimes";
 
 const Movie = () => {
@@ -10,7 +10,7 @@ const Movie = () => {
 
   return (
     <div>
-      <Overview movieId={movieId} />
+      {/* <Overview movieId={movieId} /> */}
       <Showtimes movieId={movieId} />
     </div>
   );

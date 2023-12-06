@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  height: 100%;
+  line-height: 1.2;
+}
+body {
+  font-family: 'helvetica neue', helvetica, arial, sans-serif;
+  font-weight: 400;
+}
+
+.ant-tabs-tab-btn {
+  width: 100%;
+}
+.absolute.z-1 .slick-slider .slick-list {
+  width: 100%;
+}
+
+div.slick-slide.slick-cloned{
+  width:auto;
+  height:auto;
+}
+
+#\:r44\:{
+  padding:0
+}

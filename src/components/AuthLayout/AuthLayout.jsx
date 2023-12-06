@@ -1,6 +1,5 @@
 import React from "react";
-import { Col, Layout, Row } from "antd";
-import { Outlet } from "react-router-dom";
+import {  Layout } from "antd";
 import { Content } from "antd/lib/layout/layout";
 import Header from '../Header/Header'
 import BackGround from "./BackGround";
@@ -17,7 +16,7 @@ const AuthLayout = () => {
     // </Row>
     <Layout>
       <Header></Header>
-      <Content>
+      <Content> 
         <BackGround/>
 
       </Content>

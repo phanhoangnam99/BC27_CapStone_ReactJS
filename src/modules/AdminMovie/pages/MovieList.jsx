@@ -1,4 +1,4 @@
-import { Breadcrumb, DatePicker, Form, Input, Modal, notification, Select, Switch, Table, Tooltip } from 'antd'
+import { Breadcrumb, DatePicker, Form, Input, Modal, notification,  Switch, Table, Tooltip } from 'antd'
 import { Content, Footer } from 'antd/lib/layout/layout'
 import axiosClient from 'apis/axiosClient'
 import movieAPI from 'apis/movieAPI'
@@ -6,7 +6,7 @@ import useRequest from 'hooks/useRequest'
 import moment from 'moment'
 import React, { useState } from 'react'
 import { EditOutlined, DeleteOutlined, CalendarOutlined } from '@ant-design/icons';
-import { Navigate, useNavigate } from 'react-router-dom'
+import {  useNavigate } from 'react-router-dom'
 
 
 
@@ -33,8 +33,8 @@ const MovieList = () => {
 
   const {
     data: movies,
-    isLoading,
-    error,
+    
+    
   } = useRequest(() => movieAPI.getMovies(), { deps: [change] })
 
   const onSubmit = async (values) => {
@@ -60,13 +60,13 @@ const MovieList = () => {
     }
   }
 
-  const handleSelectBox = (e) => {
-    setEdit((pre) => {
-      return { ...pre, maLoaiNguoiDung: e };
-    });
+  // const handleSelectBox = (e) => {
+  //   setEdit((pre) => {
+  //     return { ...pre, maLoaiNguoiDung: e };
+  //   });
 
 
-  }
+  // }
 
   const handleEdit = (movie) => {
     const d = new Date(movie.ngayKhoiChieu).toLocaleDateString('fr-FR');
@@ -110,7 +110,7 @@ const MovieList = () => {
     {
       title: 'Hình Ảnh',
       dataIndex: 'hinhAnh',
-      render: (hinhAnh) => <img src={hinhAnh} style={{ width: '100%', height: '100%' }} />
+      render: (hinhAnh) => <img src={hinhAnh} style={{ width: '100%', height: '100%' }} alt='hinhUser'/>
     },
     {
       title: 'Tên phim',

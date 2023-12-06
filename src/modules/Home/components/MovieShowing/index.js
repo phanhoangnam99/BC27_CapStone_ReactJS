@@ -1,1 +1,3 @@
-export { default } from "./MovieShowing";
+import MovieShowing from "./MovieShowing";
+
+export default MovieShowing

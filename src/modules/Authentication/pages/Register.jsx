@@ -2,19 +2,20 @@ import authAPI from "apis/authAPI";
 import useRequest from "hooks/useRequest";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { Avatar, Button, Checkbox, Form, Input, notification } from "antd";
+import { Avatar, Button, Form, Input, notification } from "antd";
 import { Content } from "antd/lib/layout/layout";
 import { LockOutlined } from '@ant-design/icons';
 import './style.css'
+import React from "react";
 
 
 // data: taiKhoan, matKhau, email, hoTen, soDt
 
 const Register = () => {
   const {
-    register,
+    
     handleSubmit,
-    formState: { errors },
+ 
   } = useForm({
     defaultValues: {
       taiKhoan: "",
@@ -28,7 +29,7 @@ const Register = () => {
   });
   const navigate = useNavigate();
 
-  const { data: handleRegister, isLoading } = useRequest(
+  const { data: handleRegister } = useRequest(
     (values) => authAPI.register(values),
     { isManual: true }
   );
@@ -52,10 +53,6 @@ const Register = () => {
         description: error,
       });
     }
-  };
-
-  const onError = (error) => {
-    console.log(error);
   };
 
 

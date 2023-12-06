@@ -1,7 +1,7 @@
 import movieAPI from "apis/movieAPI";
 import useRequest from "hooks/useRequest";
-import React, { useEffect } from "react";
-import { useState } from "react";
+import React, { useEffect , useState } from "react";
+
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
@@ -9,7 +9,7 @@ import "./ticket.scss";
 import Seat from "./Seat"
 
 
-import { handleList, handleBooking } from './slices/seatSlice'
+import {  handleBooking } from './slices/seatSlice'
 import { Button, Screen, Square } from "./style";
 import { useForm } from "react-hook-form";
 import { notification } from "antd";
@@ -25,8 +25,7 @@ const Ticket = () => {
   const navigate = useNavigate()
   const {
     data: ticket,
-    isLoading,
-    error,
+   
   } = useRequest(() => movieAPI.getTicket(ticketId));
 
   useEffect(() => {
@@ -39,7 +38,7 @@ const Ticket = () => {
 
   }, [submitList])
 
-  const { register, handleSubmit, setValue, } = useForm({
+  const {  handleSubmit, setValue, } = useForm({
     defaultValues: {
       maLichChieu: '',
       danhSachVe: '',

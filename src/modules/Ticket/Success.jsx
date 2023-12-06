@@ -1,10 +1,8 @@
 import React from 'react'
-import { Square } from './style'
 import { Button } from 'antd'
 import { useSelector, useDispatch } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom'
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCircleCheck, faRegular } from "@fortawesome/free-solid-svg-icons"
+import {  useNavigate } from 'react-router-dom'
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 
 import { handleBookAnother, clear } from './slices/seatSlice'
@@ -18,13 +16,13 @@ const Success = () => {
     max = Math.floor(max)
     return Math.floor(Math.random() * (max - min) + min)
   }
-  const { list, total, listSuccess } = useSelector((state) => state.seat)
+  const {  total, listSuccess } = useSelector((state) => state.seat)
 
   const sortListSuccess = [...listSuccess.danhSachVe].sort((a, b) => a.tenGhe > b.tenGhe ? 1 : -1)
 
   const getListSuccess = sortListSuccess.map((seat) => {
     return (
-      <div className='ms-5' >
+      <div className='ms-5'  key={seat.tenGhe}>
         Ghế số: {seat.tenGhe} - Giá vé: {Math.round(seat.giaVe)}
       </div >
 
@@ -41,7 +39,7 @@ const Success = () => {
   return (
     <div className='container'>
       <div className='d-flex justify-content-center  ' style={{ marginTop: '100px' }} >
-        <FontAwesomeIcon icon={faCircleCheck} style={{ width: '70px', height: '70px', color: 'green' }} />
+        {/* <FontAwesomeIcon icon={faCircleCheck} style={{ width: '70px', height: '70px', color: 'green' }} /> */}
       </div>
 
       <h3 className="w-100 text-center mt-5">Chúc mừng bạn đã đặt mua vé thành công. Vui lòng kiểm tra lại thông tin đặt vé dưới đây</h3>
@@ -52,7 +50,6 @@ const Success = () => {
         <h3 >Rạp: {listSuccess.thongTinPhim.tenRap} </h3>
         <h3>Giờ chiếu: {listSuccess.thongTinPhim.gioChieu} - Ngày: {listSuccess.thongTinPhim.ngayChieu}</h3>
         <h3>Thông tin vé:
-          <br></br>
           {getListSuccess}</h3>
         <h3>Tổng cộng: {total} </h3>
 

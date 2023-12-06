@@ -1,107 +1,87 @@
-import { useState } from "react";
-import { AiFillPlayCircle } from "react-icons/ai";
-import useRequest from "hooks/useRequest";
-import movieAPI from "apis/movieAPI";
-import styled from "styled-components";
-import ReactPlayer from "react-player";
-import { Box } from "@mui/system";
-import { Button, Modal, Typography } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+/* eslint-disable react/prop-types */
 
-import "./overview.scss";
-
-import Featured from "components/featured/Featured";
+import React, { useState } from 'react'
+import { AiFillPlayCircle } from 'react-icons/ai'
+import useRequest from 'hooks/useRequest'
+import movieAPI from 'apis/movieAPI'
+import styled from 'styled-components'
+import ReactPlayer from 'react-player'
+import { Box } from '@mui/system'
+import { Button, Modal, Typography } from '@mui/material'
+import './overview.scss'
 
 const Overview = ({ movieId }) => {
-  const [show, setShow] = useState(false);
+  // const handleClose = () => setShow(false);
+  // const handleShow = () => setShow(true);
+  const [open, setOpen] = useState(false)
 
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-  const [open, setOpen] = useState(false);
-
-  const navigate = useNavigate();
-
-  const {
-    data: movie,
-    isLoading,
-    error,
-  } = useRequest(() => movieAPI?.getMovieDetails(movieId));
+  const { data: movie } = useRequest(() => movieAPI?.getMovieDetails(movieId))
 
   if (!movie) {
-    return null;
+    return null
   }
 
   return (
     <MoviesDetail>
+      react
       <div
-        className="overview"
+        className='overview'
         style={{
           backgroundImage: `url(${movie.hinhAnh})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          height: "800px",
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          height: '800px'
         }}
       >
-        <div className="overmain">
-          <div className="movieInfo">
-            <h1 className="movieTitle">{movie.tenPhim}</h1>
-            <span className="rating">Rating: {movie.danhGia}/10</span>
-            <p className="releaseDate">
-              Ngày khởi chiếu:{" " + movie.ngayKhoiChieu}
-            </p>
-            <div className="review">Giới thiệu: {movie.moTa}</div>
+        <div className='overmain'>
+          <div className='movieInfo'>
+            <h1 className='movieTitle'>{movie.tenPhim}</h1>
+            <span className='rating'>Rating: {movie.danhGia}/10</span>
+            <p className='releaseDate'>Ngày khởi chiếu:{' ' + movie.ngayKhoiChieu}</p>
+            <div className='review'>Giới thiệu: {movie.moTa}</div>
           </div>
         </div>
       </div>
-
       <ButtonDesign onClick={() => setOpen(true)}>
-        <button className="btn btn-outline-light btn-lg">
+        <button className='btn btn-outline-light btn-lg'>
           <AiFillPlayCircle />
-          {"  "} Trailer
+          {'  '} Trailer
         </button>
       </ButtonDesign>
       <ButtonDesign onClick={() => setOpen(true)}>
-        <button className="btn btn-outline-light btn-lg">
+        <button className='btn btn-outline-light btn-lg'>
           <AiFillPlayCircle />
-          {"  "} Trailer
+          {'  '} Trailer
         </button>
       </ButtonDesign>
       <Modal
         open={open}
         onClose={() => setOpen(false)}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
+        aria-labelledby='modal-modal-title'
+        aria-describedby='modal-modal-description'
       >
-        <Box position="absolute" top="5%" left="12%">
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            <ReactPlayer
-              height="650px"
-              width="1100px"
-              url={movie.trailer}
-              controls
-              playing
-            />
+        <Box position='absolute' top='5%' left='12%'>
+          <Typography id='modal-modal-title' variant='h6' component='h2'>
+            <ReactPlayer height='650px' width='1100px' url={movie.trailer} controls playing />
           </Typography>
-          <Box sx={{
-            position:'absolute',
-            right: -100,
-            top: -10
-          }}>
-            <Button
-              variant="contained"
-              color="error"
-              onClick={() => setOpen(false)}
-            >
+          <Box
+            sx={{
+              position: 'absolute',
+              right: -100,
+              top: -10
+            }}
+          >
+            <Button variant='contained' color='error' onClick={() => setOpen(false)}>
               X
             </Button>
           </Box>
         </Box>
       </Modal>
     </MoviesDetail>
-  );
-};
+  )
+}
 
-export default Overview;
+export default Overview
 
 const MoviesDetail = styled.div`
   .buttonMate {
@@ -113,35 +93,18 @@ const MoviesDetail = styled.div`
       position: relative;
       width: 70%;
       height: 100%;
-      background: linear-gradient(
-        to right,
-        rgba(0, 0, 0, 0.9) 60%,
-        transparent
-      );
+      background: linear-gradient(to right, rgba(0, 0, 0, 0.9) 60%, transparent);
 
       @media screen and (max-width: 1184px) {
-        background: linear-gradient(
-          to right,
-          rgba(0, 0, 0, 0.94) 40%,
-          rgba(0, 0, 0, 0.733),
-          transparent
-        );
+        background: linear-gradient(to right, rgba(0, 0, 0, 0.94) 40%, rgba(0, 0, 0, 0.733), transparent);
         width: 88%;
       }
       @media screen and (max-width: 980px) {
-        background: linear-gradient(
-          to right,
-          rgba(0, 0, 0, 0.95) 50%,
-          transparent
-        );
+        background: linear-gradient(to right, rgba(0, 0, 0, 0.95) 50%, transparent);
         width: 100%;
       }
       @media screen and (max-width: 800px) {
-        background: linear-gradient(
-          900deg,
-          rgba(0, 0, 0, 0.88) 60%,
-          transparent
-        );
+        background: linear-gradient(900deg, rgba(0, 0, 0, 0.88) 60%, transparent);
         width: 100%;
       }
 
@@ -181,7 +144,7 @@ const MoviesDetail = styled.div`
       }
     }
   }
-`;
+`
 
 const ButtonDesign = styled.div`
   position: absolute;
@@ -194,7 +157,7 @@ const ButtonDesign = styled.div`
     padding: 10px 60px;
     font-size: 25px;
   }
-`;
+`
 
 //     <section className="movieInfo">
 //       <div className="full__background">

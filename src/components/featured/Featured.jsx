@@ -1,5 +1,7 @@
 import styled from "styled-components";
 import { AiFillPlayCircle } from "react-icons/ai";
+import React from "react";
+
 
 export default function Featured() {
   return (
