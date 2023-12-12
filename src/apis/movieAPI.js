@@ -132,7 +132,7 @@ const movieAPI = {
   getCommingMovies: async () => {
     try {
       const res = await fetch(
-        'https://www.galaxycine.vn/api/v2/mobile/movies/comming',
+        'https://cors-anywhere.herokuapp.com/https://www.galaxycine.vn/api/v2/mobile/movies/comming',
         requestOptions
       )
       const movies = await res.json()
