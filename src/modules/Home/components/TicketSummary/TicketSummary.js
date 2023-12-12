@@ -7,7 +7,9 @@ export default function TicketSummary({
   seatTotal,
   setStep,
   step,
-  total
+  total,
+  choosenFood,
+  foodTotal
 }) {
   const { film } = useContext(AppContext)
   return (
@@ -72,26 +74,47 @@ grayscale-[90%])'
                 </span>
               </div>
             </div>
-            <div className='xl:block hidden'>
-              <div className='my-4 border-t border-gray-400 border-dashed xl:block hidden' />
-              <div className='flex justify-between text-sm mt-2'>
-                <div className='max-w-[70%]'>
-                  <strong>{selectedSeats.length + 'x'}</strong>
-                  <span>{` Ghế`}</span>
-                  <div className='inline-flex flex-wrap w-[80%]'>
-                    <span>Ghế:</span>
-                    {selectedSeats.map((seat) => (
-                      <strong key={seat} className='px-1'>
-                        {seat}
-                      </strong>
+            {selectedSeats.length !== 0 && (
+              <div className='xl:block hidden'>
+                <div className='my-4 border-t border-gray-400 border-dashed xl:block hidden' />
+                <div className='flex justify-between text-sm mt-2'>
+                  <div className='max-w-[70%]'>
+                    <strong>{selectedSeats.length + 'x'}</strong>
+                    <span>{` Ghế`}</span>
+                    <div className='inline-flex flex-wrap w-[80%]'>
+                      <span>Ghế:</span>
+                      {selectedSeats.map((seat) => (
+                        <strong key={seat} className='px-1'>
+                          {seat}
+                        </strong>
+                      ))}
+                    </div>
+                  </div>
+                  <span className='inline-block font-bold text-xs '>
+                    {`${seatTotal.toLocaleString('de-DE')} ₫`}
+                  </span>
+                </div>
+              </div>
+            )}
+            {/* FOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOD */}
+            {choosenFood?.length !== 0 && (
+              <div className='xl:block hidden'>
+                <div className='my-4 border-t border-gray-400 border-dashed xl:block hidden' />
+                <div className='flex justify-between text-sm mt-2'>
+                  <div className='max-w-[70%]'>
+                    {choosenFood?.map((food) => (
+                      <div key={food.name}>
+                        <strong>{`${food.buy_count}x`}</strong>
+                        <span>{` ${food.name}`}</span>
+                      </div>
                     ))}
                   </div>
+                  <span className='inline-block font-bold text-xs '>
+                    {`${foodTotal?.toLocaleString('de-DE')} ₫`}
+                  </span>
                 </div>
-                <span className='inline-block font-bold text-xs '>
-                  {`${seatTotal.toLocaleString('de-DE')} ₫`}
-                </span>
               </div>
-            </div>
+            )}
           </div>
           <div className='my-4 border-t border-gray-400 col-span-3  border-dashed xl:grid hidden' />
           <div className='xl:flex hidden justify-between col-span-3'>

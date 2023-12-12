@@ -104,7 +104,7 @@ const movieAPI = {
 
   getMovieCorner: async (type, type2) => {
     try {
-      let apiUrl = `https://www.galaxycine.vn/api/v2/mobile/content/post?&type[]=${type}&page=1&limit=4`
+      let apiUrl = `https://cors-anywhere.herokuapp.com/https://www.galaxycine.vn/api/v2/mobile/content/post?&type[]=${type}&page=1&limit=4`
 
       if (type2) {
         apiUrl += `&type[]=${type2}`

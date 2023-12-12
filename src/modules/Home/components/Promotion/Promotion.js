@@ -23,15 +23,14 @@ export default function Promotion() {
     useCSS: true,
     useTransform: true,
     responsive: [
-    
       {
         breakpoint: 720,
         settings: {
           arrows: false,
-          slidesToShow: 1,
-        },
-      },
-    ],
+          slidesToShow: 1
+        }
+      }
+    ]
   }
   return (
     <div className='pb-10'>
@@ -51,7 +50,9 @@ export default function Promotion() {
                 <div className='mx-4'>
                   <img src={promotion.imageLandscape} alt='' />
                 </div>
-                <div className='mx-4 text-center text-black text-md font-bold'>{promotion.name}</div>
+                <div className='mx-4 text-center text-black text-md font-bold'>
+                  {promotion.name}
+                </div>
               </a>
             </div>
           ))}

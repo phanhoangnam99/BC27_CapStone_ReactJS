@@ -5,12 +5,13 @@ export default function QuantityController({ value, onIncrease, onDecrease }) {
   const [localValue, setLocalValue] = useState(0)
 
   const increase = () => {
-    let _value = value || localValue + 1
+    let _value = (value || localValue) + 1
     onIncrease && onIncrease(_value)
     setLocalValue(_value)
   }
   const decrease = () => {
-    let _value = value || localValue - 1
+    console.log(value)
+    let _value = (value || localValue) - 1
     onDecrease && onDecrease(_value)
 
     setLocalValue(_value)

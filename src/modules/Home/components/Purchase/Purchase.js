@@ -10,6 +10,7 @@ import { Stepper, Step, Button, Typography } from '@material-tailwind/react'
 import { AppContext } from 'contexts/app.context'
 import TicketSummary from '../TicketSummary'
 import QuantityController from 'components/QuantityController'
+import { useNavigate } from 'react-router-dom'
 
 export default function Purchase() {
   let foodData = [
@@ -137,19 +138,20 @@ export default function Purchase() {
   const handleQuantity = (foodIndex, value) => {
     const choosenFoodData =
       tempFoodData.length !== 0 ? tempFoodData[foodIndex] : foodData[foodIndex]
-    const updateFood = { ...choosenFoodData, buy_count: value }
 
-    let updatedChoosenFood =
-      tempFoodData.length !== 0 ? [...tempFoodData] : [...choosenFood]
+    console.log(choosenFoodData)
+    console.log(value)
+    const updateFood = { ...choosenFoodData, buy_count: value }
+    console.log(updateFood)
+
+    let updatedChoosenFood = [...choosenFood]
 
     if (value > 0) {
-      if (Array.isArray(updatedChoosenFood)) {
-        const exist = updatedChoosenFood.find(
-          (food) => food.name === updateFood.name
-        )
+      if (Array.isArray(choosenFood)) {
+        const exist = choosenFood.find((food) => food.name === updateFood.name)
         if (exist) {
           console.log('Food exists')
-          updatedChoosenFood = updatedChoosenFood.map((food) =>
+          updatedChoosenFood = choosenFood.map((food) =>
             food.name === exist.name ? { ...food, buy_count: value } : food
           )
         } else {
@@ -158,12 +160,10 @@ export default function Purchase() {
         }
       }
     } else {
-      const name = choosenFoodData.name
+      const name = foodData[foodIndex].name
       console.log(name)
-      if (Array.isArray(updatedChoosenFood)) {
-        updatedChoosenFood = updatedChoosenFood.filter(
-          (food) => food.name !== name
-        )
+      if (Array.isArray(choosenFood)) {
+        updatedChoosenFood = choosenFood.filter((food) => food.name !== name)
       }
     }
 
@@ -283,6 +283,8 @@ export default function Purchase() {
     )
   }
 
+  const navigate = useNavigate()
+
   return (
     <div className='md:container'>
       {/* ==================================STEP 2======================== */}
@@ -366,9 +368,11 @@ export default function Purchase() {
               <TicketSummary
                 seatTotal={seatTotal}
                 selectedSeats={selectedSeats}
+                choosenFood={choosenFood}
                 setStep={setStep}
                 step={step}
                 total={seatTotal + foodTotal}
+                foodTotal={foodTotal}
               />
             </div>
           </div>
@@ -453,7 +457,6 @@ export default function Purchase() {
                           </li>
                         ))
                       : (() => {
-                          console.log(tempFoodData.length)
                           return tempFoodData.map((food, index) => (
                             <li className='flex mb-5' key={index}>
                               <img
@@ -504,14 +507,220 @@ export default function Purchase() {
               <TicketSummary
                 seatTotal={seatTotal}
                 selectedSeats={selectedSeats}
+                choosenFood={choosenFood}
                 setStep={setStep}
                 step={step}
                 total={seatTotal + foodTotal}
+                foodTotal={foodTotal}
               />
             </div>
           </div>
         </div>
       )}
+      {/* ==================================STEP 4======================== */}
+      {step === 4 && (
+        
+        <div className='relative'>
+          <div>
+            <ul className='flex justify-center font-semibold text-[12px] md:text-base flex-nowrap '>
+              <li className='pt-4 mb-4 pl-0 text-blue-400'>
+                <button className='md:!mx-3 !mx-1 !ml-0'>
+                  Chọn phim / Rạp / Suất
+                </button>
+                <div className='relative mt-4 h-[2px] before:inline-block before:w-full before:absolute before:left-0 before:h-[2px] before:bg-grey-300 after:inline-block after:absolute after:left-0 after:h-[2px] after:bg-blue-800 after:w-full' />
+              </li>
+              <li className='pt-4 mb-4 pl-0 text-blue-400'>
+                <button className='md:!mx-3 !mx-1 !ml-0'>Chọn ghế</button>
+                <div className='relative mt-4 h-[2px] before:inline-block before:w-full before:absolute before:left-0 before:h-[2px] before:bg-grey-300 after:inline-block after:absolute after:left-0 after:h-[2px] after:bg-blue-800 after:w-full' />
+              </li>
+              <li className='pt-4 mb-4 pl-0 text-blue-400 '>
+                <button className='md:!mx-3 !mx-1 !ml-0'>Chọn thức ăn</button>
+                <div className='relative mt-4 h-[2px] before:inline-block before:w-full before:absolute before:left-0 before:h-[2px] before:bg-grey-300 after:inline-block after:absolute after:left-0 after:h-[2px] after:bg-blue-800 after:w-full' />
+              </li>
+              <li className='pt-4 mb-4 pl-0 text-blue-800 '>
+                <button className='md:!mx-3 !mx-1 !ml-0'>Thanh toán</button>
+                <div className='relative mt-4 h-[2px] before:inline-block before:w-full before:absolute before:left-0 before:h-[2px] before:bg-grey-300 after:inline-block after:absolute after:left-0 after:h-[2px] after:bg-blue-800 after:w-full' />
+              </li>
+              <li className='pt-4 mb-4 pl-0 text-[#d0d0d0] '>
+                <button className='md:!mx-3 !mx-1 !ml-0'>Xác nhận</button>
+                <div className='relative mt-4 h-[2px] before:inline-block before:w-full before:absolute before:left-0 before:h-[2px] before:bg-gray-300 ' />
+              </li>
+            </ul>
+          </div>
+          {/* ======================PART 2 ======================== */}
+          <div className='bg-gray-200 w-[100vw] -translate-x-1/2 left-1/2 relative'>
+            <div className='pt-4 md:mx-auto  screen1390:max-w-screen-xl xl:max-w-screen-screen1200 lg:max-w-4xl md:max-w-4xl md:px-0 sm:px-[45px]  grid xl:grid-cols-3 grid-cols-1'>
+              <div className='col-span-2 xl:!order-first order-last xl:h-full h-[full] overflow-hidden xl:overflow-auto xl:pb-10 pb-32'>
+                <div className='bg-white p-4 mt-8'>
+                  <h3 className='text-l mb-4 font-semibold'>
+                    Phương thức thanh toán
+                  </h3>
+                  <div className='my-4'>
+                    <ul className='leading-5 text-l'>
+                      <li className='mb-4 md:block flex items-center'>
+                        <input
+                          type='radio'
+                          className='w-4 h-4 text-primary bg-gray-50 border-gray-300'
+                          name='payment-methods'
+                          id='payment-hsbc'
+                          defaultValue='hsbc'
+                          defaultChecked
+                        />
+                        <img
+                          alt=''
+                          loading='lazy'
+                          width={50}
+                          height={50}
+                          decoding='async'
+                          data-nimg={1}
+                          className='inline-block mx-2 object-cover duration-500 ease-in-out group-hover:opacity-100
+scale-100 blur-0 grayscale-0)'
+                          src='https://www.galaxycine.vn/_next/image/?url=https%3A%2F%2Fcdn.galaxycine.vn%2Fmedia%2F2020%2F10%2F20%2Fhsbc-icon_1603203578522.png&w=128&q=75'
+                          style={{ color: 'transparent' }}
+                        />
+                        <label
+                          htmlFor='payment-hsbc'
+                          className='inline-block md:text-base text-sm'
+                        >
+                          HSBC/Payoo - ATM/VISA/MASTER/JCB/QRCODE
+                        </label>
+                      </li>
+                      <li className='mb-4 md:block flex items-center'>
+                        <input
+                          type='radio'
+                          className='w-4 h-4 text-primary bg-gray-50 border-gray-300'
+                          name='payment-methods'
+                          id='payment-shopeepay'
+                          defaultValue='shopeepay'
+                        />
+                        <img
+                          alt=''
+                          loading='lazy'
+                          width={50}
+                          height={50}
+                          decoding='async'
+                          data-nimg={1}
+                          className='inline-block mx-2 object-cover duration-500 ease-in-out group-hover:opacity-100
+scale-100 blur-0 grayscale-0)'
+                          src='https://www.galaxycine.vn/_next/image/?url=https%3A%2F%2Fcdn.galaxycine.vn%2Fmedia%2F2022%2F4%2F29%2Fshopee-pay_1651229746140.png&w=128&q=75'
+                          style={{ color: 'transparent' }}
+                        />
+                        <label
+                          htmlFor='payment-shopeepay'
+                          className='inline-block md:text-base text-sm'
+                        >
+                          Ví ShopeePay
+                        </label>
+                      </li>
+                      <li className='mb-4 md:block flex items-center'>
+                        <input
+                          type='radio'
+                          className='w-4 h-4 text-primary bg-gray-50 border-gray-300'
+                          name='payment-methods'
+                          id='payment-momo'
+                          defaultValue='momo'
+                        />
+                        <img
+                          alt=''
+                          loading='lazy'
+                          width={50}
+                          height={50}
+                          decoding='async'
+                          data-nimg={1}
+                          className='inline-block mx-2 object-cover duration-500 ease-in-out group-hover:opacity-100
+scale-100 blur-0 grayscale-0)'
+                          src='https://www.galaxycine.vn/_next/image/?url=https%3A%2F%2Fcdn.galaxycine.vn%2Fmedia%2F2020%2F10%2F20%2Fmomo-icon_1603203874499.png&w=128&q=75'
+                          style={{ color: 'transparent' }}
+                        />
+                        <label
+                          htmlFor='payment-momo'
+                          className='inline-block md:text-base text-sm'
+                        >
+                          Ví Điện Tử MoMo
+                        </label>
+                      </li>
+                      <li className='mb-4 md:block flex items-center'>
+                        <input
+                          type='radio'
+                          className='w-4 h-4 text-primary bg-gray-50 border-gray-300'
+                          name='payment-methods'
+                          id='payment-zalopay'
+                          defaultValue='zalopay'
+                        />
+                        <img
+                          alt=''
+                          loading='lazy'
+                          width={50}
+                          height={50}
+                          decoding='async'
+                          data-nimg={1}
+                          className='inline-block mx-2 object-cover duration-500 ease-in-out group-hover:opacity-100
+scale-100 blur-0 grayscale-0)'
+                          src='https://www.galaxycine.vn/_next/image/?url=https%3A%2F%2Fcdn.galaxycine.vn%2Fmedia%2F2022%2F12%2F2%2Ficon-96x96_1669977824597.png&w=128&q=75'
+                          style={{ color: 'transparent' }}
+                        />
+                        <label
+                          htmlFor='payment-zalopay'
+                          className='inline-block md:text-base text-sm'
+                        >
+                          ZaloPay
+                        </label>
+                      </li>
+                      <li className='mb-4 md:block flex items-center'>
+                        <input
+                          type='radio'
+                          className='w-4 h-4 text-primary bg-gray-50 border-gray-300'
+                          name='payment-methods'
+                          id='payment-vnpay'
+                          defaultValue='vnpay'
+                        />
+                        <img
+                          alt=''
+                          loading='lazy'
+                          width={50}
+                          height={50}
+                          decoding='async'
+                          data-nimg={1}
+                          className='inline-block mx-2 object-cover duration-500 ease-in-out group-hover:opacity-100
+scale-100 blur-0 grayscale-0)'
+                          src='https://www.galaxycine.vn/_next/image/?url=https%3A%2F%2Fcdn.galaxycine.vn%2Fmedia%2F2021%2F12%2F2%2Fdownload_1638460623615.png&w=128&q=75'
+                          style={{ color: 'transparent' }}
+                        />
+                        <label
+                          htmlFor='payment-vnpay'
+                          className='inline-block md:text-base text-sm'
+                        >
+                          VNPAY
+                        </label>
+                      </li>
+                    </ul>
+                  </div>
+                  <div className='mt-8 text-sm'>
+                    <strong className='text-red-500 font-semibold'>(*) </strong>
+                    <span>
+                      Bằng việc click/chạm vào THANH TOÁN bên phải, bạn đã xác
+                      nhận hiểu rõ các Quy Định Giao Dịch Trực Tuyến của Galaxy
+                      Cinema.
+                    </span>
+                  </div>
+                </div>
+
+                {/* ==============================TICKET SUMMARY====================================== */}
+              </div>
+              <TicketSummary
+                seatTotal={seatTotal}
+                selectedSeats={selectedSeats}
+                choosenFood={choosenFood}
+                setStep={setStep}
+                step={step}
+                total={seatTotal + foodTotal}
+                foodTotal={foodTotal}
+              />
+            </div>
+          </div>
+        </div>
+      )}
+      {step === 5 && navigate('success')}
     </div>
   )
 }
