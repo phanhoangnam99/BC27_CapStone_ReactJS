@@ -75,7 +75,7 @@ const Register = () => {
         margin: "0 auto",
         borderRadius: '5px'
       }}>
-        <div className='d-flex justify-content-center'>
+        <div className='flex justify-center'>
           <Avatar style={{ marginTop: '20px', backgroundColor: 'rgb(245, 106, 0)' }} icon={<LockOutlined />} />
         </div>
         <div className='d-flex justify-content-center mb-4'>

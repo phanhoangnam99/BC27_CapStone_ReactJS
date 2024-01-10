@@ -3,7 +3,7 @@ import { Avatar, Button, Checkbox, Form, Input, notification } from 'antd'
 // import authAPI from "apis/authAPI";
 // import useRequest from "hooks/useRequest";
 import { useForm } from 'react-hook-form'
-import { Navigate, useNavigate } from 'react-router-dom'
+import { Link, Navigate, useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { login } from '../slices/authSlice'
 import { Content } from 'antd/lib/layout/layout'
@@ -146,13 +146,13 @@ const Login = () => {
           </Form.Item>
         </Form>
         <div className='flex justify-end'>
-          <a
-            href='/'
+          <Link
+            to='/register'
             style={{ marginRight: '10px', marginBottom: '10px', color: 'blue', textDecoration: 'underline' }}
-            onClick={() => navigate('/register')}
+          
           >
             Bạn chưa có tài khoản ? Đăng ký ngay
-          </a>
+          </Link>
         </div>
       </Content>
     </>

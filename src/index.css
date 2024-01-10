@@ -26,3 +26,9 @@ div.slick-slide.slick-cloned{
 #\:r44\:{
   padding:0
 }
+
+.ant-avatar.ant-avatar-circle.ant-avatar-icon {
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}

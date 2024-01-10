@@ -17,7 +17,7 @@ import path from 'constants/path'
 import { AppContext } from 'contexts/app.context'
 
 export default function FilmDetail() {
-  const {setFilm} = useContext(AppContext)
+  const { setFilm } = useContext(AppContext)
   const { filmId } = useParams()
   const id = getIdFromNameId(filmId)
   const { data: movie } = useRequest(() => {
@@ -113,6 +113,7 @@ export default function FilmDetail() {
   }
 
   let merged = dataProcess(data)
+  console.log(merged)
 
   // data.push({
   //   label: schedule?.ngayChieuGioChieu,

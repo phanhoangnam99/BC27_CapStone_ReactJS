@@ -23,7 +23,7 @@ const promotionAPI = {
   getPromotion: async () => {
     try {
       const res = await fetch(
-        'https://cors-anywhere.herokuapp.com/https://www.galaxycine.vn/api/v2/mobile/promotions',
+        'https://cors-anywhere-nd3f.onrender.com/https://www.galaxycine.vn/api/v2/mobile/promotions',
         requestOptions
       )
       const promo = await res.json()

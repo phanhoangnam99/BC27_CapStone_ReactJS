@@ -4,7 +4,7 @@ var myHeaders = new Headers()
 myHeaders.append('Accept', 'application/json')
 myHeaders.append('Accept-Language', 'en-US,en;q=0.9')
 myHeaders.append('Connection', 'keep-alive')
-myHeaders.append('Referer', 'localhost:3000')
+myHeaders.append('Referer', 'https://galaxycine.vn')
 
 myHeaders.append(
   'sec-ch-ua',
@@ -104,7 +104,7 @@ const movieAPI = {
 
   getMovieCorner: async (type, type2) => {
     try {
-      let apiUrl = `https://cors-anywhere.herokuapp.com/https://www.galaxycine.vn/api/v2/mobile/content/post?&type[]=${type}&page=1&limit=4`
+      let apiUrl = `https://cors-anywhere-nd3f.onrender.com/https://www.galaxycine.vn/api/v2/mobile/content/post?&type[]=${type}&page=1&limit=4`
 
       if (type2) {
         apiUrl += `&type[]=${type2}`
@@ -120,7 +120,7 @@ const movieAPI = {
   getCinemaMobile: async () => {
     try {
       const res = await fetch(
-        'https://www.galaxycine.vn/api/v2/mobile/cinemas',
+        'https://cors-anywhere-nd3f.onrender.com/https://www.galaxycine.vn/api/v2/mobile/cinemas',
         requestOptions
       )
       const cinemas = await res.json()
@@ -132,7 +132,8 @@ const movieAPI = {
   getCommingMovies: async () => {
     try {
       const res = await fetch(
-        'https://cors-anywhere.herokuapp.com/https://www.galaxycine.vn/api/v2/mobile/movies/comming',
+        `     
+        https://cors-anywhere-nd3f.onrender.com/https://www.galaxycine.vn/api/v2/mobile/movies/comming`,
         requestOptions
       )
       const movies = await res.json()

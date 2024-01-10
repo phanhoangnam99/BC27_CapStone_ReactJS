@@ -25,7 +25,8 @@ import {
   Accordion,
   AccordionHeader,
   AccordionBody,
-  Collapse
+  Collapse,
+  Spinner
 } from '@material-tailwind/react'
 import classNames from 'classnames'
 import movieAPI from 'apis/movieAPI'
@@ -43,13 +44,28 @@ import {
   UserGroupIcon
 } from '@heroicons/react/24/solid'
 
-import { ChevronDownIcon, Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
+import {
+  ChevronDownIcon,
+  Bars3Icon,
+  XMarkIcon
+} from '@heroicons/react/24/outline'
+import Film from 'modules/Home/components/Film'
+import { useQuery } from '@tanstack/react-query'
 
 const Header = () => {
+  const { data: commingMoviesData ,isPending,isFetching} = useQuery({
+    queryKey: ["commingMovies"],
+    queryFn: () => {
+      return movieAPI.getCommingMovies()
+    },
+    keepPreviousData: true,
+    staleTime: 3 * 60 * 1000
+  })
   const { data: movies } = useRequest(() => movieAPI?.getMovies())
 
-  const { data: commingMovies } = useRequest(() => movieAPI.getCommingMovies())
-
+  const { data: commingMovies, isLoading } = useRequest(() =>
+    movieAPI.getCommingMovies()
+  )
 
   const { user } = useSelector((state) => state.auth)
 
@@ -60,7 +76,8 @@ const Header = () => {
   const openDrawer = () => setOpen(true)
   const closeDrawer = () => setOpen(false)
 
-  const handleOpenAccordion = (value) => setOpenAccordion(openAccordion === value ? 0 : value)
+  const handleOpenAccordion = (value) =>
+    setOpenAccordion(openAccordion === value ? 0 : value)
 
   const navigate = useNavigate()
 
@@ -95,9 +112,15 @@ const Header = () => {
         viewBox='0 0 24 24'
         strokeWidth={2}
         stroke='currentColor'
-        className={`${id === open ? 'rotate-180 transition duration-700' : ''} h-5 w-5 `}
+        className={`${
+          id === open ? 'rotate-180 transition duration-700' : ''
+        } h-5 w-5 `}
       >
-        <path strokeLinecap='round' strokeLinejoin='round' d='M19.5 8.25l-7.5 7.5-7.5-7.5' />
+        <path
+          strokeLinecap='round'
+          strokeLinejoin='round'
+          d='M19.5 8.25l-7.5 7.5-7.5-7.5'
+        />
       </svg>
     )
   }
@@ -108,7 +131,11 @@ const Header = () => {
     const renderItems = () => {
       return React.Children.map(children, (child, index) => (
         <a href='#' key={index}>
-          <MenuItem className={`${menuItemStyle ? menuItemStyle : ''} flex items-center gap-3 rounded-lg`}>
+          <MenuItem
+            className={`${
+              menuItemStyle ? menuItemStyle : ''
+            } flex items-center gap-3 rounded-lg`}
+          >
             {child}
           </MenuItem>
         </a>
@@ -133,13 +160,21 @@ const Header = () => {
                 {title}
                 <ChevronDownIcon
                   strokeWidth={2.5}
-                  className={`hidden h-3 w-3 transition-transform lg:block ${isMenuOpen ? 'rotate-180' : ''}`}
+                  className={`hidden h-3 w-3 transition-transform lg:block ${
+                    isMenuOpen ? 'rotate-180' : ''
+                  }`}
                 />
               </ListItem>
             </Typography>
           </MenuHandler>
           <MenuList className='hidden max-w-screen-xl rounded-xl lg:block'>
-            <ul className={`${ulStyle ? ulStyle : ''} gap-y-2 outline-none outline-0`}>{renderItems()}</ul>
+            <ul
+              className={`${
+                ulStyle ? ulStyle : ''
+              } gap-y-2 outline-none outline-0`}
+            >
+              {renderItems()}
+            </ul>
           </MenuList>
         </Menu>
       </React.Fragment>
@@ -160,7 +195,7 @@ const Header = () => {
           </Link>
           <div className='col-span-6 py-1 justify-evenly items-center xl:flex hidden'>
             <div>
-              {movies && commingMovies && (
+              {movies && commingMoviesData && !isLoading && (
                 <NavListMenu title={'Phim'}>
                   <div className='bg-white min-w-[250px]  rounded px-6 py-4'>
                     <div className='movie__show'>
@@ -178,15 +213,18 @@ const Header = () => {
                         {movies.map(
                           (movie, index) =>
                             index < 4 && (
-                              <li key={movie.biDanh} className='text-sm text-black py-2 transition-all duration-300'>
+                              <li
+                                key={movie.biDanh}
+                                className='text-sm text-black py-2 transition-all duration-300'
+                              >
                                 <div className='inline-block whitespace-nowrap relative max-w-full w-[140px] h-[200px]'>
                                   <div className='inline-block cursor-pointer rounded overflow-hidden card__movies max-w-full false '>
                                     <div className='object-cover rounded relative card__img max-w-full'>
-                                      <div className='absolute hidden md:block w-full h-full z-10 cursor-pointer bg-[#00000080] transition-all duration-300 ease-in-out opacity-0 hover:opacity-100'>
+                                      <div className='absolute hidden md:block w-full h-full z-10 cursor-pointer bg-[#00000080] transition-all duration-300 ease-in-out opacity-0 hover:!opacity-100'>
                                         <div className='card__hover__content flex flex-col justify-center items-center w-full h-full'>
                                           <a
                                             type='button'
-                                            className='text-white bg-[#f26b38] w-[120px] h-[40px] hover:bg-[#fb9440] rounded text-sm px-5 py-2.5 text-center inline-flex items-center dark:hover:bg-[#fb9440] dark:focus:ring-[#fb9440]'
+                                            className='text-white bg-[#f26b38] w-[120px] h-[40px] hover:bg-[#fb9440] rounded text-sm px-5 py-2.5 text-center inline-flex items-center justify-center dark:hover:bg-[#fb9440] dark:focus:ring-[#fb9440]'
                                           >
                                             <img
                                               alt='Logo Buy Ticket'
@@ -236,8 +274,10 @@ scale-100 blur-0 grayscale-0)'
                                               />
                                             </svg>
                                           </span>
-                                          <span className='text-[18px] font-bold text-white'>7.8</span>
-                                      </p>
+                                          <span className='text-[18px] font-bold text-white'>
+                                            7.8
+                                          </span>
+                                        </p>
                                       </div>
                                       <div className='age__limit absolute bottom-[6px] right-[6px]'>
                                         <span className='bg-[#F58020] px-1 py-[2px] text-sm text-white font-bold not-italic rounded'>
@@ -246,10 +286,13 @@ scale-100 blur-0 grayscale-0)'
                                       </div>
                                     </div>
                                   </div>
-                                  <div className='Card_card__title__kFoFc mt-2' style={{ width: 128 }}>
+                                  <div
+                                    className='Card_card__title__kFoFc mt-2'
+                                    style={{ width: 128 }}
+                                  >
                                     <a
                                       type='button'
-                                      className='text-xs text-black hover:text-orange font-semibold not-italic w-[140px]'
+                                      className='whitespace-pre-wrap text-xs font-semibold not-italic w-[140px]'
                                       href='/dat-ve/the-marvels/'
                                     >
                                       {movie?.tenPhim}
@@ -273,18 +316,21 @@ scale-100 blur-0 grayscale-0)'
                         </a>
                       </div>
                       <ul className='flex flex-row gap-7 justify-between'>
-                        {commingMovies.map(
+                        {commingMoviesData.map(
                           (movie, index) =>
                             index < 4 && (
-                              <li key={movie.id} className='text-sm text-black py-2 transition-all duration-300'>
+                              <li
+                                key={movie.id}
+                                className='text-sm text-black py-2 transition-all duration-300'
+                              >
                                 <div className='inline-block whitespace-nowrap relative max-w-full w-[140px] h-[200px]'>
                                   <div className='inline-block cursor-pointer rounded overflow-hidden card__movies max-w-full false '>
                                     <div className='object-cover rounded relative card__img max-w-full'>
-                                      <div className='absolute hidden md:block w-full h-full z-10 cursor-pointer bg-[#00000080] transition-all duration-300 ease-in-out opacity-0 hover:opacity-100'>
+                                      <div className='absolute hidden md:block w-full h-full z-10 cursor-pointer bg-[#00000080] transition-all duration-300 ease-in-out opacity-0 hover:!opacity-100'>
                                         <div className='card__hover__content flex flex-col justify-center items-center w-full h-full'>
                                           <a
                                             type='button'
-                                            className='text-white bg-[#f26b38] w-[120px] h-[40px] hover:bg-[#fb9440] rounded text-sm px-5 py-2.5 text-center inline-flex items-center dark:hover:bg-[#fb9440] dark:focus:ring-[#fb9440]'
+                                            className='  text-white bg-[#f26b38] w-[120px] h-[40px] hover:bg-[#fb9440] rounded text-sm px-5 py-2.5 text-center inline-flex items-center dark:hover:bg-[#fb9440] dark:focus:ring-[#fb9440] justify-center'
                                           >
                                             <img
                                               alt='Logo Buy Ticket'
@@ -309,7 +355,7 @@ scale-100 blur-0 grayscale-0)'
                                           height={200}
                                           decoding='async'
                                           data-nimg={1}
-                                          className='undefined object-cover duration-500 ease-in-out group-hover:opacity-100
+                                          className='undefined object-cover duration-500 ease-in-out group-hover:!opacity-100
 scale-100 blur-0 grayscale-0)'
                                           src={`${movie?.imagePortrait}`}
                                           style={{ color: 'transparent' }}
@@ -334,7 +380,9 @@ scale-100 blur-0 grayscale-0)'
                                               />
                                             </svg>
                                           </span>
-                                          <span className='text-[18px] font-bold text-white'>7.8</span>
+                                          <span className='text-[18px] font-bold text-white'>
+                                            7.8
+                                          </span>
                                         </p>
                                       </div>
                                       <div className='age__limit absolute bottom-[6px] right-[6px]'>
@@ -344,10 +392,13 @@ scale-100 blur-0 grayscale-0)'
                                       </div>
                                     </div>
                                   </div>
-                                  <div className='Card_card__title__kFoFc mt-2' style={{ width: 128 }}>
+                                  <div
+                                    className='Card_card__title__kFoFc mt-2'
+                                    style={{ width: 128 }}
+                                  >
                                     <a
                                       type='button'
-                                      className='text-sm font-semibold not-italic w-[140px]'
+                                      className=' whitespace-pre-wrap text-xs font-semibold not-italic w-[140px]'
                                       href='/dat-ve/the-marvels/'
                                     >
                                       {movie?.name}
@@ -362,33 +413,53 @@ scale-100 blur-0 grayscale-0)'
                   </div>
                 </NavListMenu>
               )}
+              {isPending && isFetching && <Spinner />}
             </div>
             <div>
-              <NavListMenu title={'Góc điện ảnh'} menuItemStyle={'!p-0'} ulStyle={'mb-0'}>
+              <NavListMenu
+                title={'Góc điện ảnh'}
+                menuItemStyle={'!p-0'}
+                ulStyle={'mb-0'}
+              >
                 <div className='bg-white min-w-[200px] text-center border border-white border-solid rounded'>
                   <ul>
                     <li className='text-sm text-black hover:text-[#f26b38] hover:pl-0.5 hover:border-l-4 capitalize hover:border-[#fd841f] hover:bg-[#fb770b1a] transition-all duration-300'>
-                      <a className='block py-2 text-black hover:text-orange' href='/dien-anh/'>
+                      <a
+                        className='block py-2 text-black hover:text-orange'
+                        href='/dien-anh/'
+                      >
                         Thể loại phim
                       </a>
                     </li>
                     <li className='text-sm text-black hover:text-[#f26b38] hover:pl-0.5 hover:border-l-4 capitalize hover:border-[#fd841f] hover:bg-[#fb770b1a] transition-all duration-300'>
-                      <a className='block py-2 text-black hover:text-orange' href='/dien-vien/'>
+                      <a
+                        className='block py-2 text-black hover:text-orange'
+                        href='/dien-vien/'
+                      >
                         Diễn Viên
                       </a>
                     </li>
                     <li className='text-sm text-black hover:text-[#f26b38] hover:pl-0.5 hover:border-l-4 capitalize hover:border-[#fd841f] hover:bg-[#fb770b1a] transition-all duration-300'>
-                      <a className='block py-2 text-black hover:text-orange' href='/dao-dien/'>
+                      <a
+                        className='block py-2 text-black hover:text-orange'
+                        href='/dao-dien/'
+                      >
                         Đạo Diễn
                       </a>
                     </li>
                     <li className='text-sm text-black hover:text-[#f26b38] hover:pl-0.5 hover:border-l-4 capitalize hover:border-[#fd841f] hover:bg-[#fb770b1a] transition-all duration-300'>
-                      <a className='block py-2 text-black hover:text-orange' href='/binh-luan-phim/'>
+                      <a
+                        className='block py-2 text-black hover:text-orange'
+                        href='/binh-luan-phim/'
+                      >
                         Bình Luận Phim
                       </a>
                     </li>
                     <li className='text-sm text-black hover:text-[#f26b38] hover:pl-0.5 hover:border-l-4 capitalize hover:border-[#fd841f] hover:bg-[#fb770b1a] transition-all duration-300'>
-                      <a className='block py-2 text-black hover:text-orange' href='/movie-blog/'>
+                      <a
+                        className='block py-2 text-black hover:text-orange'
+                        href='/movie-blog/'
+                      >
                         Blog Điện Ảnh
                       </a>
                     </li>
@@ -398,16 +469,26 @@ scale-100 blur-0 grayscale-0)'
             </div>
 
             <div>
-              <NavListMenu title={'Sự kiện'} menuItemStyle={'!p-0'} ulStyle={'mb-0'}>
+              <NavListMenu
+                title={'Sự kiện'}
+                menuItemStyle={'!p-0'}
+                ulStyle={'mb-0'}
+              >
                 <div className='bg-white min-w-[200px] text-center border border-white border-solid rounded'>
                   <ul>
                     <li className='text-sm text-black hover:text-[#f26b38] hover:pl-0.5 hover:border-l-4 capitalize hover:border-[#fd841f] hover:bg-[#fb770b1a] transition-all duration-300'>
-                      <a className='block py-2 text-black hover:text-orange ' href='/dien-anh/'>
+                      <a
+                        className='block py-2 text-black hover:text-orange '
+                        href='/dien-anh/'
+                      >
                         Ưu đãi
                       </a>
                     </li>
                     <li className='text-sm text-black hover:text-[#f26b38] hover:pl-0.5 hover:border-l-4 capitalize hover:border-[#fd841f] hover:bg-[#fb770b1a] transition-all duration-300'>
-                      <a className='block py-2 text-black hover:text-orange' href='/dien-vien/'>
+                      <a
+                        className='block py-2 text-black hover:text-orange'
+                        href='/dien-vien/'
+                      >
                         Phim hay tháng
                       </a>
                     </li>
@@ -417,7 +498,11 @@ scale-100 blur-0 grayscale-0)'
             </div>
 
             <div>
-              <NavListMenu title={'Rạp/Giá vé'} menuItemStyle={'!p-0'} ulStyle={'mb-0'}>
+              <NavListMenu
+                title={'Rạp/Giá vé'}
+                menuItemStyle={'!p-0'}
+                ulStyle={'mb-0'}
+              >
                 <div className='bg-white min-w-[200px] text-center border border-white border-solid rounded'>
                   <ul className='max-h-[300px]'>
                     {cinemas?.map((cinema, index) => (
@@ -425,7 +510,10 @@ scale-100 blur-0 grayscale-0)'
                         key='index'
                         className='text-sm text-black hover:text-[#f26b38] hover:pl-0.5 hover:border-l-4 capitalize hover:border-[#fd841f] hover:bg-[#fb770b1a] transition-all duration-300'
                       >
-                        <a className='block py-2 text-black hover:text-orange' href={`https://galaxycine.vn/rap-gia-ve/${cinema.slug}`}>
+                        <a
+                          className='block py-2 text-black hover:text-orange'
+                          href={`https://galaxycine.vn/rap-gia-ve/${cinema.slug}`}
+                        >
                           {cinema.name}
                         </a>
                       </li>
@@ -479,7 +567,11 @@ scale-100 blur-0 grayscale-0)'
                   className='w-5 h-5'
                 >
                   ()
-                  <path strokeLinecap='round' strokeLinejoin='round' d='M19.5 8.25l-7.5 7.5-7.5-7.5' />
+                  <path
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
+                    d='M19.5 8.25l-7.5 7.5-7.5-7.5'
+                  />
                 </svg>
                 {/* ======================LANGUAGE=================== */}
                 <div className='flex items-center'>
@@ -498,7 +590,13 @@ scale-100 blur-0 grayscale-0)'
                           style={{ width: ' 1em', height: '1em' }}
                         >
                           <g>
-                            <circle cx='7.5' cy='4.5' fill='none' r='3.8' strokeMiterlimit={10} />
+                            <circle
+                              cx='7.5'
+                              cy='4.5'
+                              fill='none'
+                              r='3.8'
+                              strokeMiterlimit={10}
+                            />
                             <path
                               d='m1.5 14.2c0-3.3 2.7-6 6-6s6 2.7 6 6'
                               fill='none'
@@ -536,7 +634,11 @@ scale-100 blur-0 grayscale-0)'
           ) : null}
           {/* ======================DRAWER INIT=================== */}
           <div className='xl:hidden block'>
-            <Button onClick={openDrawer} variant='text' className='rounded-full'>
+            <Button
+              onClick={openDrawer}
+              variant='text'
+              className='rounded-full'
+            >
               <span>
                 <svg width={20} height={14} viewBox='0 0 20 14' fill='none'>
                   <path
@@ -548,9 +650,20 @@ scale-100 blur-0 grayscale-0)'
                 </svg>
               </span>
             </Button>
-            <Drawer open={open} onClose={closeDrawer} className='p-4 ' placement='right' size={245}>
+            <Drawer
+              open={open}
+              onClose={closeDrawer}
+              className='p-4 '
+              placement='right'
+              size={245}
+            >
               <div className='mb-6 xl:hidden items-center justify-between flex'>
-                <IconButton variant='text' className='ml-auto' color='blue-gray' onClick={closeDrawer}>
+                <IconButton
+                  variant='text'
+                  className='ml-auto'
+                  color='blue-gray'
+                  onClick={closeDrawer}
+                >
                   <svg
                     xmlns='http://www.w3.org/2000/svg'
                     fill='none'
@@ -559,19 +672,28 @@ scale-100 blur-0 grayscale-0)'
                     stroke='currentColor'
                     className='h-5 w-5'
                   >
-                    <path strokeLinecap='round' strokeLinejoin='round' d='M6 18L18 6M6 6l12 12' />
+                    <path
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                      d='M6 18L18 6M6 6l12 12'
+                    />
                   </svg>
                 </IconButton>
               </div>
               {/* ======================DRAWER END=================== */}
-              <Accordion open={openAccordion === 1} icon={<Icon id={1} open={openAccordion} />}>
+              <Accordion
+                open={openAccordion === 1}
+                icon={<Icon id={1} open={openAccordion} />}
+              >
                 <AccordionHeader
                   onClick={() => handleOpenAccordion(1)}
                   className={
                     //   `${
                     //   openAccordion == 1 ? 'text-blue-500 text-xs font-normal ' : 'text-xs text-black font-normal '
                     // }text-xs text-black font-normal `
-                    classNames(`text-sm accordion-header    text-black font-normal border-b-0 `)
+                    classNames(
+                      `text-sm accordion-header    text-black font-normal border-b-0 `
+                    )
                   }
                 >
                   {' '}
@@ -592,10 +714,15 @@ scale-100 blur-0 grayscale-0)'
                   </div>
                 </AccordionBody>
               </Accordion>
-              <Accordion open={openAccordion === 2} icon={<Icon id={2} open={openAccordion} />}>
+              <Accordion
+                open={openAccordion === 2}
+                icon={<Icon id={2} open={openAccordion} />}
+              >
                 <AccordionHeader
                   onClick={() => handleOpenAccordion(2)}
-                  className={classNames(`text-sm accordion-header  text-black font-normal border-b-0 `)}
+                  className={classNames(
+                    `text-sm accordion-header  text-black font-normal border-b-0 `
+                  )}
                 >
                   Góc điện ảnh
                 </AccordionHeader>
@@ -629,10 +756,15 @@ scale-100 blur-0 grayscale-0)'
                   </div>
                 </AccordionBody>
               </Accordion>
-              <Accordion open={openAccordion === 3} icon={<Icon id={3} open={openAccordion} />}>
+              <Accordion
+                open={openAccordion === 3}
+                icon={<Icon id={3} open={openAccordion} />}
+              >
                 <AccordionHeader
                   onClick={() => handleOpenAccordion(3)}
-                  className={classNames(`text-sm accordion-header  text-black font-normal border-b-0 `)}
+                  className={classNames(
+                    `text-sm accordion-header  text-black font-normal border-b-0 `
+                  )}
                 >
                   Sự kiện
                 </AccordionHeader>
@@ -651,10 +783,15 @@ scale-100 blur-0 grayscale-0)'
                   </div>
                 </AccordionBody>
               </Accordion>
-              <Accordion open={openAccordion === 4} icon={<Icon id={4} open={openAccordion} />}>
+              <Accordion
+                open={openAccordion === 4}
+                icon={<Icon id={4} open={openAccordion} />}
+              >
                 <AccordionHeader
                   onClick={() => handleOpenAccordion(4)}
-                  className={classNames(`text-sm accordion-header  text-black font-normal border-b-0 `)}
+                  className={classNames(
+                    `text-sm accordion-header  text-black font-normal border-b-0 `
+                  )}
                 >
                   Rạp / Giá vé
                 </AccordionHeader>
@@ -684,6 +821,10 @@ scale-100 blur-0 grayscale-0)'
             </Drawer>
           </div>
           {/* ======================DRAWER END=================== */}
+
+          <Link to='login' className='col-span-3 m-[auto] hover:text-orange '>
+            Đăng nhập
+          </Link>
         </div>
 
         <div className=''></div>

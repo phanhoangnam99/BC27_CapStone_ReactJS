@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useMemo, useState } from 'react'
 import {
   CogIcon,
   UserIcon,
@@ -10,7 +10,10 @@ import { Stepper, Step, Button, Typography } from '@material-tailwind/react'
 import { AppContext } from 'contexts/app.context'
 import TicketSummary from '../TicketSummary'
 import QuantityController from 'components/QuantityController'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
+import useRequest from 'hooks/useRequest'
+import movieAPI from 'apis/movieAPI'
+import moment from 'moment'
 
 export default function Purchase() {
   let foodData = [
@@ -135,6 +138,7 @@ export default function Purchase() {
   const [step, setStep] = useState(2)
 
   const [choosenFood, setChoosenFood] = useState([])
+  const [cinemaInfo, setCinemaInfo] = useState({})
   const handleQuantity = (foodIndex, value) => {
     const choosenFoodData =
       tempFoodData.length !== 0 ? tempFoodData[foodIndex] : foodData[foodIndex]
@@ -284,6 +288,49 @@ export default function Purchase() {
   }
 
   const navigate = useNavigate()
+
+  const { scheduleId } = useParams()
+  const { data: movieSchedule } = useRequest(() => {
+    return movieAPI.getSchedule(film.maPhim)
+  })
+
+  // const ec = useMemo(() => {
+  //   Array.isArray(movieSchedule?.heThongRapChieu) &&
+  //     movieSchedule?.heThongRapChieu?.forEach((system) => {
+  //       if (system?.maHeThongRap === 'Galaxy') {
+  //         system?.cumRapChieu.forEach((branch) => {
+  //           branch.lichChieuPhim.forEach((schedule) => {
+  //             if (schedule.maLichChieu === scheduleId) {
+  //               setCinemaInfo({ diachi: branch.diaChi })
+  //             }
+  //             console.log('not found')
+  //           })
+  //         })
+  //       }
+  //     })
+  // },[])
+
+  useEffect(() => {
+    if (Array.isArray(movieSchedule?.heThongRapChieu)) {
+      movieSchedule.heThongRapChieu.forEach((system) => {
+        if (system?.maHeThongRap === 'Galaxy') {
+          system.cumRapChieu.forEach((branch) => {
+            branch.lichChieuPhim.forEach((schedule) => {
+              if (schedule.maLichChieu === scheduleId) {
+                setCinemaInfo({
+                  diaChi: branch.diaChi,
+                  tenRap: schedule.tenRap,
+                  ngayChieuGioChieu: schedule.ngayChieuGioChieu
+                })
+              } else {
+                console.log('not found')
+              }
+            })
+          })
+        }
+      })
+    }
+  }, [movieSchedule, scheduleId, setCinemaInfo])
 
   return (
     <div className='md:container'>
@@ -519,7 +566,6 @@ export default function Purchase() {
       )}
       {/* ==================================STEP 4======================== */}
       {step === 4 && (
-        
         <div className='relative'>
           <div>
             <ul className='flex justify-center font-semibold text-[12px] md:text-base flex-nowrap '>
@@ -720,7 +766,94 @@ scale-100 blur-0 grayscale-0)'
           </div>
         </div>
       )}
-      {step === 5 && navigate('success')}
+      {step === 5 && (
+        <div className='relative'>
+          <div>
+            <ul className='flex justify-center font-semibold text-[12px] md:text-base flex-nowrap '>
+              <li className='pt-4 mb-4 pl-0 text-blue-400'>
+                <button className='md:!mx-3 !mx-1 !ml-0'>
+                  Chọn phim / Rạp / Suất
+                </button>
+                <div className='relative mt-4 h-[2px] before:inline-block before:w-full before:absolute before:left-0 before:h-[2px] before:bg-grey-300 after:inline-block after:absolute after:left-0 after:h-[2px] after:bg-blue-800 after:w-full' />
+              </li>
+              <li className='pt-4 mb-4 pl-0 text-blue-400'>
+                <button className='md:!mx-3 !mx-1 !ml-0'>Chọn ghế</button>
+                <div className='relative mt-4 h-[2px] before:inline-block before:w-full before:absolute before:left-0 before:h-[2px] before:bg-grey-300 after:inline-block after:absolute after:left-0 after:h-[2px] after:bg-blue-800 after:w-full' />
+              </li>
+              <li className='pt-4 mb-4 pl-0 text-blue-400 '>
+                <button className='md:!mx-3 !mx-1 !ml-0'>Chọn thức ăn</button>
+                <div className='relative mt-4 h-[2px] before:inline-block before:w-full before:absolute before:left-0 before:h-[2px] before:bg-grey-300 after:inline-block after:absolute after:left-0 after:h-[2px] after:bg-blue-800 after:w-full' />
+              </li>
+              <li className='pt-4 mb-4 pl-0 text-blue-400 '>
+                <button className='md:!mx-3 !mx-1 !ml-0'>Thanh toán</button>
+                <div className='relative mt-4 h-[2px] before:inline-block before:w-full before:absolute before:left-0 before:h-[2px] before:bg-grey-300 after:inline-block after:absolute after:left-0 after:h-[2px] after:bg-blue-800 after:w-full' />
+              </li>
+              <li className='pt-4 mb-4 pl-0 text-blue-800 '>
+                <button className='md:!mx-3 !mx-1 !ml-0'>Xác nhận</button>
+                <div className='relative mt-4 h-[2px] before:inline-block before:w-full before:absolute before:left-0 before:h-[2px] before:bg-grey-300 after:inline-block after:absolute after:left-0 after:h-[2px] after:bg-blue-800 after:w-full' />
+              </li>
+            </ul>
+          </div>
+          {/* ======================PART 2 ======================== */}
+          <div className='bg-gray-200 w-[100vw] -translate-x-1/2 left-1/2 relative'>
+            <div className='pt-4 md:mx-auto  screen1390:max-w-screen-xl xl:max-w-screen-screen1200 lg:max-w-4xl md:max-w-4xl md:px-0 sm:px-[45px]  grid xl:grid-cols-3 grid-cols-1'>
+              <div className='col-span-3 xl:!order-first order-last xl:h-full h-[full] overflow-hidden xl:overflow-auto xl:pb-10 pb-32'>
+                <div className='bg-white p-4 mt-8'>
+                  <div className='flex justify-center'>
+                    <img
+                      alt=''
+                      src={`${film.hinhAnh}`}
+                      className='w-60 h-80 '
+                    ></img>
+                  </div>
+
+                  <div className='flex justify-center '>
+                    <svg
+                      xmlns='http://www.w3.org/2000/svg'
+                      fill='none'
+                      viewBox='0 0 24 24'
+                      strokeWidth={1.5}
+                      stroke='currentColor'
+                      className='w-20 h-20 text-green-500'
+                    >
+                      <path
+                        strokeLinecap='round'
+                        strokeLinejoin='round'
+                        d='M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z'
+                        className='	'
+                      />
+                    </svg>
+                  </div>
+                  <div className='px-[20%] text-center'>
+                    <div> Chúc mừng! Bạn đã đặt vé thành công</div>
+                    <strong>{film?.tenPhim}</strong>
+                    <div className='text-slate-300'>
+                      {`Ghế: ${selectedSeats}`}
+                    </div>
+
+                    <div>
+                      <strong>{`${cinemaInfo.tenRap}: `}</strong>
+                      <span className='max-w-full'>{`${cinemaInfo.diaChi}`}</span>
+                    </div>
+                    <div className='flex justify-evenly'>
+                      <span className=''>
+                        <strong>Ngày:</strong>
+                        <span>16/12/2023</span>
+                      </span>
+                      <span className=''>
+                        <strong>Giờ:</strong>
+                        <span>00:00</span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <button onClick={() => setStep(step - 1)}>a</button>
+                {/* ==============================TICKET SUMMARY====================================== */}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

@@ -9,6 +9,7 @@ import AdminLayout from 'components/AdminLayout'
 import Success from 'modules/Ticket/Success'
 import FilmDetail from 'modules/Home/components/FilmDetail'
 import Purchase from 'modules/Home/components/Purchase'
+import Login from 'modules/Authentication/pages/Login'
 const User = lazy(() => import('modules/AdminMovie/pages/User'))
 
 // Không import trực tiếp các pages, vì nó sẽ được tải tất cả ở lần đầu tiên
@@ -20,7 +21,7 @@ const User = lazy(() => import('modules/AdminMovie/pages/User'))
 // Để chỉ cần tải những pages cần thiết ta sử dụng kĩ thuật lazyload
 const Home = lazy(() => import('modules/Home/pages/Home'))
 const Movie = lazy(() => import('modules/Movie/pages/Movie'))
-const Login = lazy(() => import('modules/Authentication/pages/Login'))
+// const Login = lazy(() => import('modules/Authentication/pages/Login'))
 const Register = lazy(() => import('modules/Authentication/pages/Register'))
 
 const MovieList = lazy(() => import('modules/AdminMovie/pages/MovieList'))
@@ -61,7 +62,7 @@ function App() {
           <Route index element={<Home />} />
           <Route path='movie/:movieId' element={<Movie />} />
           <Route path='dat-ve/:filmId' element={<FilmDetail />} />
-          <Route path='purchase/:filmId' element={<Purchase />} />
+          <Route path='purchase/:scheduleId' element={<Purchase />} />
           <Route
             path='checkout/:checkoutId'
             element={
@@ -72,11 +73,10 @@ function App() {
             }
           />
           <Route path='ticket/success' element={<Success />} />
-        </Route>
-
-        <Route path='/' element={<AuthLayout />}>
-          <Route path='login' element={<Login />} />
-          <Route path='register' element={<Register />} />
+          <Route path='/' element={<AuthLayout />}>
+            <Route path='login' element={<Login />} />
+            <Route path='register' element={<Register />} />
+          </Route>
         </Route>
       </Routes>
     </Suspense>

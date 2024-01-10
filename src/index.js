@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import './global'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
@@ -16,6 +17,14 @@ import reportWebVitals from './reportWebVitals'
 
 import { ThemeProvider } from '@material-tailwind/react'
 import { AppProvider } from 'contexts/app.context'
+
+import {
+  useQuery,
+  useMutation,
+  useQueryClient,
+  QueryClient,
+  QueryClientProvider
+} from '@tanstack/react-query'
 
 const theme = {
   accordion: {
@@ -237,16 +246,25 @@ const theme = {
     }
   }
 }
-
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      retry: 0
+    }
+  }
+})
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
   <React.StrictMode>
     <Provider store={store}>
       <BrowserRouter>
         <ThemeProvider value={theme}>
-          <AppProvider>
-            <App />
-          </AppProvider>
+          <QueryClientProvider client={queryClient}>
+            <AppProvider>
+              <App />
+            </AppProvider>
+          </QueryClientProvider>
         </ThemeProvider>
       </BrowserRouter>
     </Provider>

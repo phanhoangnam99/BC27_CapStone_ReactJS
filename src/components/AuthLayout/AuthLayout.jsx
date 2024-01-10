@@ -1,7 +1,6 @@
 import React from "react";
 import {  Layout } from "antd";
 import { Content } from "antd/lib/layout/layout";
-import Header from '../Header/Header'
 import BackGround from "./BackGround";
 
 const AuthLayout = () => {
@@ -15,7 +14,7 @@ const AuthLayout = () => {
     //   </Col>
     // </Row>
     <Layout>
-      <Header></Header>
+      
       <Content> 
         <BackGround/>
 

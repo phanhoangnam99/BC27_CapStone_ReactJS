@@ -6,7 +6,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { generateNameId } from 'utils/utils'
 
-export default function Film({ movie, key: index }) {
+export default function Film({ movie, key: index , }) {
   return (
     movie && (
       <div className='col-span-1 group    ' key={index}>
@@ -45,7 +45,8 @@ scale-100 blur-0 grayscale-0)'
                       className='mr-2 h-5 w-5'
                       src='https://galaxycine.vn/_next/static/media/Vector-1.319a0d2b.svg'
                       style={{
-                        color: 'transparent'
+                        color: 'transparent',
+                      
                       }}
                     />
                     Mua vé
