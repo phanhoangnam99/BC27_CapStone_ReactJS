@@ -1,6 +1,10 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
+import { useQuery } from '@tanstack/react-query'
+import movieAPI from 'apis/movieAPI'
 import { AppContext } from 'contexts/app.context'
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom'
 
 export default function TicketSummary({
   selectedSeats,
@@ -9,9 +13,44 @@ export default function TicketSummary({
   step,
   total,
   choosenFood,
-  foodTotal
+  foodTotal,
+  cinemaInfo
 }) {
   const { film } = useContext(AppContext)
+  const { data: filmDetail } = useQuery({
+    queryKey: ['filmDetail', film.maPhim],
+
+    queryFn: () => movieAPI.getFilmDetail(film.maPhim)
+  })
+  // const queryClient = useQueryClient()
+  const { data: scheduleDetail } = useQuery({
+    queryKey: ['scheduleDetail', film.maPhim],
+
+    queryFn: () => movieAPI.getLichChieu(film.maPhim)
+  })
+
+  let scheduleDetailVar = {
+    /* your scheduleDetail object */
+  }
+
+  let matchingLichChieu
+
+  if (scheduleDetail) {
+    for (let heThongRap of scheduleDetail.heThongRapChieu) {
+      for (let cumRap of heThongRap.cumRapChieu) {
+        let found = cumRap.lichChieuPhim.find(
+          (lichChieu) => lichChieu.maLichChieu === film.maPhim
+        )
+        if (found) {
+          matchingLichChieu = cumRap
+          break
+        }
+      }
+      if (matchingLichChieu) break
+    }
+  }
+
+  console.log(matchingLichChieu)
   return (
     <div className='col-span-1 xl:pl-4 xl:order-none order-first py-4'>
       <div className='booking__summary md:mb-4'>
@@ -19,7 +58,7 @@ export default function TicketSummary({
         <div className='bg-white p-3 grid grid-cols-3 xl:gap-2 items-center'>
           <div className='row-span-2 md:row-span-1 xl:row-span-2 block md:hidden xl:block'>
             <img
-              alt={`${film?.tenPhim}`}
+              alt={`${filmDetail?.tenPhim}`}
               loading='lazy'
               width={100}
               height={150}
@@ -27,7 +66,7 @@ export default function TicketSummary({
               data-nimg={1}
               className='xl:w-full xl:h-full  md:w-[80px] md:h-[120px] w-[90px] h-[110px] rounded object-cover object-cover duration-500 ease-in-out group-hover:opacity-100
 scale-100 blur-0 grayscale-0)'
-              src={`${film.hinhAnh}`}
+              src={`${filmDetail?.hinhAnh}`}
               style={{
                 color: 'transparent'
               }}
@@ -35,7 +74,7 @@ scale-100 blur-0 grayscale-0)'
           </div>
           <div className='row-span-2 md:row-span-1 xl:row-span-2 hidden md:block xl:hidden'>
             <img
-              alt={`${film.tenPhim}`}
+              alt={`${filmDetail?.tenPhim}`}
               loading='lazy'
               width={100}
               height={150}
@@ -43,7 +82,7 @@ scale-100 blur-0 grayscale-0)'
               data-nimg={1}
               className=' w-[220px] h-[150px] rounded object-cover object-cover duration-500 ease-in-out group-hover:opacity-100
 grayscale-[90%])'
-              src={`${film.hinhAnh}`}
+              src={`${filmDetail?.hinhAnh}`}
               style={{
                 color: 'transparent'
               }}
@@ -51,7 +90,7 @@ grayscale-[90%])'
           </div>
           <div className='flex-1 col-span-2 md:col-span-1 row-span-1 xl:col-span-2'>
             <h3 className='text-sm xl:text-base font-bold xl:mb-2 '>
-              Điều Ước
+              {filmDetail?.tenPhim}
             </h3>
             <p className='text-sm xl:block inline-block'>2D Lồng Tiếng</p>
             <div className='xl:mt-2 ml-2 xl:ml-0 xl:block inline-block' />

@@ -6,10 +6,10 @@ import Slider from 'react-slick'
 
 export default function AppIntroduction() {
   const images = [
-    'https://www.galaxycine.vn/_next/image/?url=%2F_next%2Fstatic%2Fmedia%2FMovieDetail.52d031b0.png&w=384&q=75',
-    'https://www.galaxycine.vn/_next/image/?url=%2F_next%2Fstatic%2Fmedia%2FProfile.767d60ee.png&w=384&q=75 ',
-    'https://www.galaxycine.vn/_next/static/media/screen-slider-iphone.f903b5b8.svg',
-    'https://www.galaxycine.vn/_next/image/?url=%2F_next%2Fstatic%2Fmedia%2FSplash.de33f19c.png&w=384&q=75'
+    'https://www.galaxycine.vn/_next/static/media/Splash.de33f19c.png',
+    'https://www.galaxycine.vn/_next/static/media/screen-slider-iphone.3339b3ed.png',
+    'https://www.galaxycine.vn/_next/static/media/Profile.767d60ee.png',
+    'https://www.galaxycine.vn/_next/static/media/MovieDetail.52d031b0.png'
   ]
 
   const settings = {
@@ -24,8 +24,11 @@ export default function AppIntroduction() {
     className: 'w-full h-full'
   }
   return (
-    < >
-      <div id="AppIntroduction" className="  advertise bg-[url('https://www.galaxycine.vn/_next/static/media/bg-icon-iphone-x.3b4bcdb7.svg')] w-full md:block hidden absolute left-[50%] -translate-x-[50%]">
+    <>
+      <div
+        id='AppIntroduction'
+        className="  advertise bg-[url('https://www.galaxycine.vn/_next/static/media/bg-icon-iphone-x.3b4bcdb7.svg')] w-full md:block hidden absolute left-[50%] -translate-x-[50%]"
+      >
         <div className='advertise__wrap my-0 mx-auto py-12 screen1390:max-w-screen-xl xl:max-w-screen-screen1200 lg:max-w-6xl'>
           <div className='advertise__container grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-2 gap-6'>
             <div className='advertise__left my-o mx-auto relative z-20 md:block hidden '>
@@ -53,7 +56,11 @@ export default function AppIntroduction() {
                 <Carousel autoplay effect dots={false} fade>
                   {images.map((image, index) => (
                     <div key={index} className=' '>
-                      <img alt={image} src={image} className='top-[5px] h-auto w-auto '></img>
+                      <img
+                        alt={image}
+                        src={image}
+                        className='top-[5px] h-auto w-auto '
+                      ></img>
                     </div>
                   ))}
                 </Carousel>
@@ -61,10 +68,13 @@ export default function AppIntroduction() {
             </div>
             <div className='advertise__right flex items-center px-7'>
               <div className='advertise__right__content'>
-                <h1 className='text-3xl text-white mb-4'>Đặt Vé Online - Không Lo Trễ Nải</h1>
+                <h1 className='text-3xl text-white mb-4'>
+                  Đặt Vé Online - Không Lo Trễ Nải
+                </h1>
                 <p className='text-sm text-white mb-5'>
-                  Ghét đông đúc ồn ào? Lười xếp hàng mua vé? Hãy quên đi cách mua vé giấy truyền thống tốn thời gian hay
-                  xếp hàng lấy vé online phiền toái.
+                  Ghét đông đúc ồn ào? Lười xếp hàng mua vé? Hãy quên đi cách
+                  mua vé giấy truyền thống tốn thời gian hay xếp hàng lấy vé
+                  online phiền toái.
                 </p>
                 <div className='app__qr flex items-end'>
                   <span className='qr__code'>
@@ -84,7 +94,11 @@ export default function AppIntroduction() {
                   </span>
                   <ul className='list-none mb-0'>
                     <li className='inline-block'>
-                      <a className='inline-block' target='_blank' href='https://apps.apple.com/vn/app/id593312549'>
+                      <a
+                        className='inline-block'
+                        target='_blank'
+                        href='https://apps.apple.com/vn/app/id593312549'
+                      >
                         <img
                           alt='Icon App Store'
                           loading='lazy'

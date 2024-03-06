@@ -14,53 +14,22 @@ import { useNavigate, useParams } from 'react-router-dom'
 import useRequest from 'hooks/useRequest'
 import movieAPI from 'apis/movieAPI'
 import moment from 'moment'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 
 export default function Purchase() {
   let foodData = [
     {
       image:
-        'https://www.galaxycine.vn/_next/image/?url=https%3A%2F%2Fcdn.galaxycine.vn%2Fmedia%2F2023%2F11%2F10%2Fwishcombo-co-online-01_1699614547904.jpg&w=384&q=75',
-      name: '      iLy Wish     Tumbler      ',
-      desc: '01 Ly Wish Tumbler + 01 Ly nước ngọt size L',
-      price: '219000',
+        'https://cdn.galaxycine.vn/media/2024/2/8/ly-wish_1707405452106.jpg',
+      name: '      iLy Wish     Tumbler Promotion 199k     ',
+      desc: '01 Ly Wish Tumbler',
+      price: '199000',
       buy_count: 0
     },
 
     {
       image:
-        'https://www.galaxycine.vn/_next/image/?url=https%3A%2F%2Fcdn.galaxycine.vn%2Fmedia%2F2023%2F11%2F10%2Fwishcombo-co-online-02_1699614846550.jpg&w=384&q=75',
-      name: 'iCombo Wish 1',
-      desc: '1 Ly Wish Tumbler + 01 ly nước ngọt size L + 01 Hộp bắp + FREE Up Vị bất kỳ',
-      price: '249000',
-      buy_count: 0
-    },
-    {
-      image:
-        'https://www.galaxycine.vn/_next/image/?url=https%3A%2F%2Fcdn.galaxycine.vn%2Fmedia%2F2023%2F11%2F10%2Fwishcombo-co-online-03_1699614856486.jpg&w=384&q=75',
-      name: 'iCombo Wish 2',
-      desc: '1 Ly Wish Tumbler + 02 ly nước ngọt size L + 01 Hộp bắp + FREE Up Vị bất kỳ',
-      price: '269000',
-      buy_count: 0
-    },
-    {
-      image:
-        'https://www.galaxycine.vn/_next/image/?url=https%3A%2F%2Fcdn.galaxycine.vn%2Fmedia%2F2023%2F10%2F13%2Fcombo299k-transdd-coonline-new-01_1697166695374.jpg&w=384&q=75',
-      name: 'iCombo D&amp;D Dice Tower Promotion 299K',
-      desc: '01 Ly D&D Dice Tower',
-      price: '299000',
-      buy_count: 0
-    },
-    {
-      image:
-        'https://www.galaxycine.vn/_next/image/?url=https%3A%2F%2Fcdn.galaxycine.vn%2Fmedia%2F2023%2F10%2F13%2Fcombo299k-transdd-coonline-new-02_1697166681809.jpg&w=384&q=75',
-      name: 'iCombo Optimus Prime Promotion 299K',
-      desc: '01 Optimus Prime Container',
-      price: '299000',
-      buy_count: 0
-    },
-    {
-      image:
-        'https://www.galaxycine.vn/_next/image/?url=https%3A%2F%2Fcdn.galaxycine.vn%2Fmedia%2F2023%2F3%2F31%2Fmenuboard-combo1-2-2022-coonline-combo2_1680280172153.jpg&w=384&q=75',
+        'https://cdn.galaxycine.vn/media/2023/3/31/menuboard-combo1-2-2022-coonline-combo2_1680280172153.jpg',
       name: 'iCombo 2 Big Extra STD',
       desc: '02 Ly nước ngọt size L + 01 Hộp bắp + 1 Snack',
       price: '129000',
@@ -68,7 +37,7 @@ export default function Purchase() {
     },
     {
       image:
-        'https://www.galaxycine.vn/_next/image/?url=https%3A%2F%2Fcdn.galaxycine.vn%2Fmedia%2F2023%2F3%2F31%2Fcombo-1-2-co-combo2_1680280070233.jpg&w=384&q=75',
+        'https://cdn.galaxycine.vn/media/2023/3/31/combo-1-2-co-combo2_1680280070233.jpg',
       name: 'iCombo 2 Big STD',
       desc: '02 Ly nước ngọt size L + 01 Hộp bắp',
       price: '109000',
@@ -76,7 +45,7 @@ export default function Purchase() {
     },
     {
       image:
-        'https://www.galaxycine.vn/_next/image/?url=https%3A%2F%2Fcdn.galaxycine.vn%2Fmedia%2F2023%2F3%2F31%2Fmenuboard-combo1-2-2022-coonline-combo1_1680280126585.jpg&w=384&q=75',
+        'https://cdn.galaxycine.vn/media/2023/3/31/menuboard-combo1-2-2022-coonline-combo1_1680280126585.jpg',
       name: 'iCombo 1 Big Extra STD',
       desc: '1 Ly nước ngọt size L + 01 Hộp bắp + 1 Snack',
       price: '109000',
@@ -84,42 +53,27 @@ export default function Purchase() {
     },
     {
       image:
-        'https://www.galaxycine.vn/_next/image/?url=https%3A%2F%2Fcdn.galaxycine.vn%2Fmedia%2F2023%2F3%2F31%2Fcombo-1-2-co-combo1_1680279990724.jpg&w=384&q=75',
-      name: 'iCombo 1 Big STD',
+        'https://cdn.galaxycine.vn/media/2023/3/31/combo-1-2-co-combo1_1680279990724.jpg',
       desc: '01 Ly nước ngọt size L + 01 Hộp bắp',
       price: '89000',
       buy_count: 0
     },
     {
       image:
-        'https://www.galaxycine.vn/_next/image/?url=https%3A%2F%2Fcdn.galaxycine.vn%2Fmedia%2F2023%2F6%2F8%2Fcombooptimus-co-onl1_1686238609745.jpg&w=384&q=75',
-      name: 'iCombo Optimus Prime 1',
-      desc: '01 OP Head + 01 ly nước ngọt size L + 01 Hộp bắp + FREE Up Vị bất kỳ',
-      price: '369000',
+        'https://cdn.galaxycine.vn/media/2024/2/8/combo199k-trans-coonline_1707397071492.jpg',
+      name: 'iCombo Optimus Prime 199K',
+      desc: '01 Optimus Prime Container',
+      price: '199000',
       buy_count: 0
     },
     {
       image:
-        'https://www.galaxycine.vn/_next/image/?url=https%3A%2F%2Fcdn.galaxycine.vn%2Fmedia%2F2023%2F6%2F8%2Fcombooptimus2-co-onl_1686238595708.jpg&w=384&q=75',
-      name: 'iCombo Optimus Prime 2',
-      desc: '01 OP Head + 02 ly nước ngọt size L + 01 Hộp bắp + FREE Up Vị bất kỳ',
-      price: '379000',
-      buy_count: 0
-    },
-    {
-      image:
-        'https://www.galaxycine.vn/_next/image/?url=https%3A%2F%2Fcdn.galaxycine.vn%2Fmedia%2F2023%2F6%2F15%2Fgoi-galaxy-play-mobile-10k_1686840452914.jpg&w=384&q=75',
-      name: 'Gói Galaxy Play Mobile',
-      desc: '1 tháng xem phim Online',
-      price: '10000',
-      buy_count: 0
-    },
-    {
-      image:
-        'https://www.galaxycine.vn/_next/image/?url=https%3A%2F%2Fcdn.galaxycine.vn%2Fmedia%2F2023%2F6%2F15%2Fgoi-galaxy-play-sieu-viet-50k_1686840459689.jpg&w=384&q=75',
-      name: 'Goi Galaxy Play Sieu Viet',
-      desc: '2 tháng xem phim Online Độc quyền phim Việt chiếu rạp',
-      price: '50000',
+        'https://cdn.galaxycine.vn/media/2024/2/8/combo199k-dd-coonline_1707397095517.jpg',
+      name: 'iCombo D&D Dice Tower Promotion 199K',
+
+      desc: '01 Ly D&D Dice Tower',
+
+      price: '199000',
       buy_count: 0
     }
   ]
@@ -185,7 +139,7 @@ export default function Purchase() {
     if (choosenFood.length > 0) {
       const updatedFoodData = foodData.map((foodItem) => {
         const chosenItem = choosenFood.find(
-          (chosen) => chosen.name.trim() === foodItem.name.trim()
+          (chosen) => chosen.name === foodItem.name
         )
         if (chosenItem) {
           return { ...foodItem, buy_count: chosenItem.buy_count }
@@ -293,6 +247,7 @@ export default function Purchase() {
   const { data: movieSchedule } = useRequest(() => {
     return movieAPI.getSchedule(film.maPhim)
   })
+  const queryClient = useQueryClient()
 
   // const ec = useMemo(() => {
   //   Array.isArray(movieSchedule?.heThongRapChieu) &&
@@ -382,26 +337,34 @@ export default function Purchase() {
                     <p className='text-s text-center text-grey-50'>Màn hình</p>
                     <div className='border-2 !border-orange-400	 mt-3' />
                     <div className='text-sm flex md:flex-row flex-col-reverse justify-between items-center py-9 gap-2'>
-                      <div className='flex gap-5'>
-                        <div>
-                          <span className='w-5 h-5 rounded bg-gray-300 inline-block align-middle' />
-                          <span className='ml-2'>Ghế đã bán</span>
+                      <div className='flex gap-4'>
+                        <div className='flex'>
+                          <span className='w-5  h-5  rounded bg-gray-300 inline-block align-middle' />
+                          <span className='ml-2 whitespace-nowrap'>
+                            Ghế đã bán
+                          </span>
                         </div>
-                        <div>
-                          <span className='w-5 h-5 rounded bg-orange inline-block align-middle' />
-                          <span className='ml-2'>Ghế đang chọn</span>
+                        <div className='flex items-center'>
+                          <span className='w-5  h-5  rounded bg-orange inline-block align-middle' />
+                          <span className='ml-2 whitespace-nowrap'>
+                            Ghế đang chọn
+                          </span>
                         </div>
                       </div>
-                      <div className='flex gap-5'>
-                        <div>
-                          <span className='w-5 h-5 rounded border !border-[#f2c94c] inline-block align-middle' />
-                          <span className='ml-2'>Ghế VIP</span>
+                      <div className='flex gap-4'>
+                        <div className='flex items-center'>
+                          <span className='w-5  h-5  rounded border !border-[#f2c94c] inline-block align-middle' />
+                          <span className='ml-2 whitespace-nowrap'>
+                            Ghế VIP
+                          </span>
                         </div>
-                        <div>
-                          <span className='w-5 h-5 rounded border border-grey-20 inline-block align-middle' />
-                          <span className='ml-2'>Ghế đơn</span>
+                        <div className='flex items-center'>
+                          <span className='w-5  h-5  rounded border border-grey-20 inline-block align-middle' />
+                          <span className='ml-2 whitespace-nowrap'>
+                            Ghế đơn
+                          </span>
                         </div>
-                        <div>
+                        <div className='flex items-center'>
                           <span className='w-[46px] h-5 rounded border !border-[#034ea2] inline-block align-middle' />
                           <span className='ml-2'>Ghế đôi</span>
                         </div>
@@ -420,6 +383,7 @@ export default function Purchase() {
                 step={step}
                 total={seatTotal + foodTotal}
                 foodTotal={foodTotal}
+                scheduleDetail={cinemaInfo}
               />
             </div>
           </div>
@@ -621,7 +585,7 @@ export default function Purchase() {
                           data-nimg={1}
                           className='inline-block mx-2 object-cover duration-500 ease-in-out group-hover:opacity-100
 scale-100 blur-0 grayscale-0)'
-                          src='https://www.galaxycine.vn/_next/image/?url=https%3A%2F%2Fcdn.galaxycine.vn%2Fmedia%2F2020%2F10%2F20%2Fhsbc-icon_1603203578522.png&w=128&q=75'
+                          src='https://cdn.galaxycine.vn/media/2020/10/20/hsbc-icon_1603203578522.png'
                           style={{ color: 'transparent' }}
                         />
                         <label
@@ -648,7 +612,7 @@ scale-100 blur-0 grayscale-0)'
                           data-nimg={1}
                           className='inline-block mx-2 object-cover duration-500 ease-in-out group-hover:opacity-100
 scale-100 blur-0 grayscale-0)'
-                          src='https://www.galaxycine.vn/_next/image/?url=https%3A%2F%2Fcdn.galaxycine.vn%2Fmedia%2F2022%2F4%2F29%2Fshopee-pay_1651229746140.png&w=128&q=75'
+                          src='https://cdn.galaxycine.vn/media/2022/4/29/shopee-pay_1651229746140.png'
                           style={{ color: 'transparent' }}
                         />
                         <label
@@ -675,7 +639,7 @@ scale-100 blur-0 grayscale-0)'
                           data-nimg={1}
                           className='inline-block mx-2 object-cover duration-500 ease-in-out group-hover:opacity-100
 scale-100 blur-0 grayscale-0)'
-                          src='https://www.galaxycine.vn/_next/image/?url=https%3A%2F%2Fcdn.galaxycine.vn%2Fmedia%2F2020%2F10%2F20%2Fmomo-icon_1603203874499.png&w=128&q=75'
+                          src='https://cdn.galaxycine.vn/media/2020/10/20/momo-icon_1603203874499.png'
                           style={{ color: 'transparent' }}
                         />
                         <label
@@ -702,7 +666,7 @@ scale-100 blur-0 grayscale-0)'
                           data-nimg={1}
                           className='inline-block mx-2 object-cover duration-500 ease-in-out group-hover:opacity-100
 scale-100 blur-0 grayscale-0)'
-                          src='https://www.galaxycine.vn/_next/image/?url=https%3A%2F%2Fcdn.galaxycine.vn%2Fmedia%2F2022%2F12%2F2%2Ficon-96x96_1669977824597.png&w=128&q=75'
+                          src='https://cdn.galaxycine.vn/media/2022/12/2/icon-96x96_1669977824597.png'
                           style={{ color: 'transparent' }}
                         />
                         <label
@@ -729,7 +693,7 @@ scale-100 blur-0 grayscale-0)'
                           data-nimg={1}
                           className='inline-block mx-2 object-cover duration-500 ease-in-out group-hover:opacity-100
 scale-100 blur-0 grayscale-0)'
-                          src='https://www.galaxycine.vn/_next/image/?url=https%3A%2F%2Fcdn.galaxycine.vn%2Fmedia%2F2021%2F12%2F2%2Fdownload_1638460623615.png&w=128&q=75'
+                          src='https://cdn.galaxycine.vn/media/2021/12/2/download_1638460623615.png'
                           style={{ color: 'transparent' }}
                         />
                         <label

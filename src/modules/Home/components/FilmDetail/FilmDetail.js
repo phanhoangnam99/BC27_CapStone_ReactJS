@@ -15,6 +15,7 @@ import {
 import { Button } from 'antd'
 import path from 'constants/path'
 import { AppContext } from 'contexts/app.context'
+import { useQuery } from '@tanstack/react-query'
 
 export default function FilmDetail() {
   const { setFilm } = useContext(AppContext)
@@ -24,8 +25,20 @@ export default function FilmDetail() {
     return movieAPI.getFilmDetail(id)
   })
 
-  const { data: movieSchedule } = useRequest(() => {
-    return movieAPI.getSchedule(id)
+  const { data: filmDetailData } = useQuery({
+    queryKey: ['film', id],
+
+    queryFn: () => movieAPI.getFilmDetail(id)
+  })
+
+
+  // const { data: movieSchedule } = useRequest(() => {
+  //   return movieAPI.getSchedule(id)
+  // })
+
+  const { data: movieSchedule } = useQuery({
+    queryKey: ['schedule', id],
+    queryFn: () => movieAPI.getSchedule(id)
   })
   const date = new Date(movie?.ngayKhoiChieu)
 
@@ -128,7 +141,7 @@ export default function FilmDetail() {
   // data.append()
 
   return (
-    movie && (
+    filmDetailData && (
       <>
         <div className='sm:h-96 h-48 lg:h-full'>
           <div className='bg-black flex justify-center overflow-hidden h-full'>
@@ -151,14 +164,14 @@ export default function FilmDetail() {
                   <div className='relative h-full w-full'>
                     <div className='relative w-1/2 h-full mx-auto z-[2]'>
                       <img
-                        src={`${movie.hinhAnh}`}
+                        src={`${filmDetailData.hinhAnh}`}
                         className='w-full h-full mx-auto md:h-full lg:h-[500px]  object-contain duration-500 ease-in-out group-hover:opacity-100'
                         alt=''
                       />
                     </div>
                     <div className='bg-[#0003] z-[50] top-0 absolute w-full h-full'></div>
 
-                    <Trailer url={movie.trailer}>
+                    <Trailer url={filmDetailData.trailer}>
                       <button className='absolute top-[50%] left-[50%] -translate-x-2/4 -translate-y-2/4 z-[99999]'>
                         <img
                           alt='play'
@@ -169,7 +182,7 @@ export default function FilmDetail() {
                           data-nimg={1}
                           className='w-[40px] h-[40px] lg:w-[64px] lg:h-[64px] object-cover duration-500 ease-in-out group-hover:opacity-100
 scale-100 blur-0 grayscale-0)'
-                          src='https://www.galaxycine.vn/_next/image/?url=%2F_next%2Fstatic%2Fmedia%2Fbutton-play.2f9c0030.png&w=64&q=75'
+                          src='https://www.galaxycine.vn/_next/static/media/button-play.2f9c0030.png'
                           style={{ color: 'transparent' }}
                         />
                       </button>
@@ -192,10 +205,14 @@ scale-100 blur-0 grayscale-0)'
         <div className='mt-3 container'>
           <div className='grid grid-cols-3'>
             <div className=''>
-              <img src={`${movie.hinhAnh}`} alt='' className='h-40 w-30' />
+              <img
+                src={`${filmDetailData.hinhAnh}`}
+                alt=''
+                className='h-40 w-30'
+              />
             </div>
             <div className='col-span-2 ml-4 flex flex-col justify-center'>
-              <div>{movie.tenPhim}</div>
+              <div>{filmDetailData.tenPhim}</div>
               <div>
                 <div className='text-sm mt-2  font-semibold not-italic'>
                   <svg
@@ -230,7 +247,7 @@ scale-100 blur-0 grayscale-0)'
                       d='M316.9 18C311.6 7 300.4 0 288.1 0s-23.4 7-28.8 18L195 150.3 51.4 171.5c-12 1.8-22 10.2-25.7 21.7s-.7 24.2 7.9 32.7L137.8 329 113.2 474.7c-2 12 3 24.2 12.9 31.3s23 8 33.8 2.3l128.3-68.5 128.3 68.5c10.8 5.7 23.9 4.9 33.8-2.3s14.9-19.3 12.9-31.3L438.5 329 542.7 225.9c8.6-8.5 11.7-21.2 7.9-32.7s-13.7-19.9-25.7-21.7L381.2 150.3 316.9 18z'
                     />
                   </svg>
-                  <span className=' mr-1'>{movie.danhGia}</span>
+                  <span className=' mr-1'>{filmDetailData.danhGia}</span>
                 </div>
               </div>
             </div>
@@ -242,7 +259,7 @@ scale-100 blur-0 grayscale-0)'
             </h1>
             <div className='block__wysiwyg text-black-10 text-sm font-normal not-italic content-text content__data'>
               <p>
-                <span style={{ fontSize: 14 }}>{movie.moTa}</span>
+                <span style={{ fontSize: 14 }}>{filmDetailData.moTa}</span>
               </p>
             </div>
           </div>

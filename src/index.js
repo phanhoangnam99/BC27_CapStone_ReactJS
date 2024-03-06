@@ -25,6 +25,7 @@ import {
   QueryClient,
   QueryClientProvider
 } from '@tanstack/react-query'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
 const theme = {
   accordion: {
@@ -264,6 +265,8 @@ root.render(
             <AppProvider>
               <App />
             </AppProvider>
+
+            <ReactQueryDevtools initialIsOpen={false} />
           </QueryClientProvider>
         </ThemeProvider>
       </BrowserRouter>

@@ -151,6 +151,21 @@ const movieAPI = {
     return axiosClient.get('QuanLyRap/LayThongTinLichChieuPhim', {
       params: { MaPhim: filmId }
     })
+  },
+
+  getFnB: async () => {
+    try {
+      const res = await fetch(
+        `     
+        https://cors-anywhere-nd3f.onrender.com/https://www.galaxycine.vn/api/v2/mobile/concessions/cinema/3a9fe5b5-0f63-4889-aaae-6c1b76d7050d
+`,
+        requestOptions
+      )
+      const fnb = await res.json()
+      return fnb.data.result
+    } catch (error) {
+      console.log(error)
+    }
   }
 }
 

@@ -235,7 +235,7 @@ const Header = () => {
         <div className=' xl:grid xl:grid-cols-12  items-end pt-4 py- flex justify-between'>
           <Link to='/' className='sm:col-span-3 pb-1 col-span-8'>
             <img
-              src='https://www.galaxycine.vn/_next/image/?url=%2F_next%2Fstatic%2Fmedia%2Fgalaxy-logo-mobile.074abeac.png&w=256&q=75'
+              src='https://www.galaxycine.vn/_next/static/media/galaxy-logo-mobile.074abeac.png'
               alt=''
               className='h-8 w-auto'
             />
@@ -678,7 +678,7 @@ scale-100 blur-0 grayscale-0)'
                           ref={refs.setFloating}
                           style={{
                             transformOrigin: `${middlewareData.arrow?.x}px top`,
-                            zIndex:99999999999,
+                            zIndex: 99999999999,
                             ...floatingStyles
                           }}
                         >

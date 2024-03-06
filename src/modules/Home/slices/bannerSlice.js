@@ -17,7 +17,7 @@ export const getBanners = createAsyncThunk(
       return rejectWithValue(error);
     }
   }
-);
+);  
 
 const bannerSlice = createSlice({
   name: "home/banner",
