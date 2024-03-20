@@ -14,7 +14,9 @@ import { useNavigate, useParams } from 'react-router-dom'
 import useRequest from 'hooks/useRequest'
 import movieAPI from 'apis/movieAPI'
 import moment from 'moment'
-import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { set } from 'react-hook-form'
+import { notification } from 'antd'
 
 export default function Purchase() {
   let foodData = [
@@ -77,13 +79,14 @@ export default function Purchase() {
       buy_count: 0
     }
   ]
+  const { scheduleId } = useParams()
 
   const [tempFoodData, setTempFoodData] = useState([])
   const { film } = useContext(AppContext)
   const [total, setTotal] = useState(0)
   const [foodTotal, setFoodTotal] = useState(0)
   const [seatList, setSeatList] = useState({
-    maLichChieu: film.maPhim
+    maLichChieu: scheduleId
   })
 
   const [seatTotal, setSeatTotal] = useState(0)
@@ -93,6 +96,47 @@ export default function Purchase() {
 
   const [choosenFood, setChoosenFood] = useState([])
   const [cinemaInfo, setCinemaInfo] = useState({})
+
+  const navigate = useNavigate()
+  const [loading, setLoading] = useState(true)
+
+
+  const { data: movieSchedule, isSuccess: movieSchedulePending } = useRequest(
+    () => {
+      return movieAPI.getSchedule(film.maPhim)
+    }
+  )
+
+  const { data: scheduleDetail, isSuccess: scheduleDetailPending } = useRequest(
+    () => {
+      return movieAPI.getScheduleDetail(scheduleId)
+    }
+  )
+
+  useEffect(() => {
+    if (!movieSchedulePending && !scheduleDetailPending) {
+      const bodyPurchase = document.getElementById('body-purchase')
+      if (bodyPurchase) {
+        bodyPurchase.classList.remove('loading')
+      }
+      setLoading(false)
+    }
+  }, [movieSchedulePending, scheduleDetailPending])
+
+  const ticketBookingMutation = useMutation({
+    mutationFn: (body) => movieAPI.ticketBooking(body)
+  })
+
+  useEffect(() => {
+    if (step === 5) {
+      try {
+        ticketBookingMutation.mutateAsync(seatList)
+      } catch (error) {
+        notification.error({ message: `${error}` })
+      }
+    }
+  }, [step])
+
   const handleQuantity = (foodIndex, value) => {
     const choosenFoodData =
       tempFoodData.length !== 0 ? tempFoodData[foodIndex] : foodData[foodIndex]
@@ -162,43 +206,41 @@ export default function Purchase() {
     }
   }, [seatList])
 
-  const handleChooseSeat = (seat) => {
+  const handleChooseSeat = (tenGhe, maGhe) => {
+    console.log(tenGhe, maGhe)
     let price = 0
     if (
-      35 <= seat &&
-      seat <= 142 &&
-      (seat - 35) % 16 >= 0 &&
-      (seat - 35) % 16 <= 11
+      35 <= tenGhe &&
+      tenGhe <= 142 &&
+      (tenGhe - 35) % 16 >= 0 &&
+      (tenGhe - 35) % 16 <= 11
     ) {
       price = 105000
     } else {
       price = 75000
     }
-    const exist = selectedSeats.find((element) => element === seat)
+    const exist = selectedSeats.find((element) => element === tenGhe)
     if (!exist) {
       if (!seatList.danhSachVe) {
-        const updateSeat = [{ maGhe: seat, giaVe: price }]
+        const updateSeat = [{ maGhe, giaVe: price }]
 
         setSeatList({
           ...seatList,
           danhSachVe: updateSeat
         })
 
-        selectedSeats.push(seat)
+        selectedSeats.push(tenGhe)
       } else {
-        const updateSeat = [
-          ...seatList.danhSachVe,
-          { maGhe: seat, giaVe: price }
-        ]
+        const updateSeat = [...seatList.danhSachVe, { maGhe, giaVe: price }]
         setSeatList({
           ...seatList,
           danhSachVe: updateSeat
         })
-        selectedSeats.push(seat)
+        selectedSeats.push(tenGhe)
       }
     } else {
       const updateSeat = seatList.danhSachVe.filter(
-        (element) => element.maGhe !== seat
+        (element) => element.maGhe !== maGhe
       )
 
       setSeatList({
@@ -206,7 +248,7 @@ export default function Purchase() {
         danhSachVe: updateSeat
       })
 
-      setSelectedSeats(selectedSeats.filter((element) => element !== seat))
+      setSelectedSeats(selectedSeats.filter((element) => element !== tenGhe))
     }
   }
 
@@ -216,37 +258,67 @@ export default function Purchase() {
   // Render seats
   const elements = []
   for (let i = 1; i <= numberOfElements; i++) {
-    elements.push(
-      <React.Fragment key={i}>
-        <div className='my-created-div'>
-          {/* You can add content or manipulate attributes for each div here */}
-          <button
-            onClick={() => handleChooseSeat(i)}
-            className={`md:h-6 h-4 border rounded md:text-s text-[10px] transition duration-200 ease-in-out text-white md:w-6 w-4 border-grey-20 ${
-              selectedSeats.includes(i)
-                ? 'bg-orange'
-                : 'xl:hover:bg-orange xl:hover:border-orange'
-            } ${
-              35 <= i && i <= 142 && (i - 35) % 16 >= 0 && (i - 35) % 16 <= 11
-                ? '!border-[#f2c94c]'
-                : ''
-            }`}
-          >
-            <span className='inline-block md:w-5 w-4 text-center '>{i}</span>
-          </button>
-        </div>
-        {(i + 1) % 16 === 0 && i !== numberOfElements - 1 && <br />}{' '}
-        {/* Add a <br> after every 16th div */}
-      </React.Fragment>
+    const seat = scheduleDetail?.danhSachGhe.find(
+      (ghe) => ghe.tenGhe === i.toString().padStart(2, '0')
     )
+
+    const isBooked = seat && seat.taiKhoanNguoiDat
+
+    isBooked
+      ? elements.push(
+          <React.Fragment key={i}>
+            <div className='my-created-div'>
+              {/* You can add content or manipulate attributes for each div here */}
+              <button
+                onClick={() => handleChooseSeat(seat?.tenGhe, seat?.maGhe)}
+                className={`md:h-6 h-4 border rounded md:text-s text-[10px] transition duration-200 ease-in-out text-white md:w-6 w-4 border-grey-20 ${'bg-gray-500 pointer-events-none'} ${
+                  35 <= i &&
+                  i <= 142 &&
+                  (i - 35) % 16 >= 0 &&
+                  (i - 35) % 16 <= 11
+                    ? '!border-[#f2c94c]'
+                    : ''
+                }`}
+              >
+                <span className='inline-block md:w-5 w-4 text-center '>x</span>
+              </button>
+            </div>
+            {(i + 1) % 16 === 0 && i !== numberOfElements - 1 && <br />}{' '}
+            {/* Add a <br> after every 16th div */}
+          </React.Fragment>
+        )
+      : elements.push(
+          <React.Fragment key={i}>
+            <div className='my-created-div'>
+              {/* You can add content or manipulate attributes for each div here */}
+              <button
+                onClick={() => handleChooseSeat(seat?.tenGhe, seat?.maGhe)}
+                className={`md:h-6 h-4 border rounded md:text-s text-[10px] transition duration-200 ease-in-out text-white md:w-6 w-4 border-grey-20
+
+${
+  selectedSeats.includes(seat?.tenGhe)
+    ? 'bg-orange'
+    : 'xl:hover:bg-orange xl:hover:border-orange'
+} 
+
+
+${
+  35 <= i && i <= 142 && (i - 35) % 16 >= 0 && (i - 35) % 16 <= 11
+    ? '!border-[#f2c94c]'
+    : ''
+}`}
+              >
+                <span className='inline-block md:w-5 w-4 text-center '>
+                  {i}
+                </span>
+              </button>
+            </div>
+            {(i + 1) % 16 === 0 && i !== numberOfElements - 1 && <br />}{' '}
+            {/* Add a <br> after every 16th div */}
+          </React.Fragment>
+        )
   }
 
-  const navigate = useNavigate()
-
-  const { scheduleId } = useParams()
-  const { data: movieSchedule } = useRequest(() => {
-    return movieAPI.getSchedule(film.maPhim)
-  })
   const queryClient = useQueryClient()
 
   // const ec = useMemo(() => {
@@ -273,8 +345,6 @@ export default function Purchase() {
             branch.lichChieuPhim.forEach((schedule) => {
               if (schedule.maLichChieu === scheduleId) {
                 setCinemaInfo({
-                  diaChi: branch.diaChi,
-                  tenRap: schedule.tenRap,
                   ngayChieuGioChieu: schedule.ngayChieuGioChieu
                 })
               } else {
@@ -285,10 +355,19 @@ export default function Purchase() {
         }
       })
     }
-  }, [movieSchedule, scheduleId, setCinemaInfo])
+    setCinemaInfo((prev) => ({
+      ...prev,
+      diaChi: scheduleDetail?.thongTinPhim.diaChi,
+      tenRap: scheduleDetail?.thongTinPhim.tenRap,
+      ngayChieu: scheduleDetail?.thongTinPhim.ngayChieu,
+      gioChieu: scheduleDetail?.thongTinPhim.gioChieu,
+      tenCumRap: scheduleDetail?.thongTinPhim.tenCumRap,
+      tenPhim: scheduleDetail?.thongTinPhim.tenPhim
+    }))
+  }, [movieSchedule, scheduleId, setCinemaInfo, scheduleDetail])
 
   return (
-    <div className='md:container'>
+    <div className='md:container loading' id='body-purchase'>
       {/* ==================================STEP 2======================== */}
 
       {step === 2 && (
@@ -523,6 +602,7 @@ export default function Purchase() {
                 step={step}
                 total={seatTotal + foodTotal}
                 foodTotal={foodTotal}
+                scheduleDetail={cinemaInfo}
               />
             </div>
           </div>
@@ -725,6 +805,7 @@ scale-100 blur-0 grayscale-0)'
                 step={step}
                 total={seatTotal + foodTotal}
                 foodTotal={foodTotal}
+                scheduleDetail={cinemaInfo}
               />
             </div>
           </div>
@@ -796,22 +877,34 @@ scale-100 blur-0 grayscale-0)'
                     </div>
 
                     <div>
-                      <strong>{`${cinemaInfo.tenRap}: `}</strong>
+                      <strong>{`Galaxy ${
+                        cinemaInfo.tenCumRap.split(' - ')[1]
+                      }: `}</strong>{' '}
                       <span className='max-w-full'>{`${cinemaInfo.diaChi}`}</span>
+                      <br />
                     </div>
                     <div className='flex justify-evenly'>
+                      <span>
+                        <strong>{`Rạp số: `}</strong>{' '}
+                        <span>{`${cinemaInfo.tenRap.split(' ')[1]}`}</span>
+                      </span>
+
                       <span className=''>
                         <strong>Ngày:</strong>
-                        <span>16/12/2023</span>
+                        <span>{cinemaInfo.ngayChieu}</span>
                       </span>
                       <span className=''>
                         <strong>Giờ:</strong>
-                        <span>00:00</span>
+                        <span>
+                          {' '}
+                          {new Date(cinemaInfo?.ngayChieuGioChieu)
+                            .toLocaleTimeString('it-IT')
+                            .slice(0, 5)}
+                        </span>
                       </span>
                     </div>
                   </div>
                 </div>
-                <button onClick={() => setStep(step - 1)}>a</button>
                 {/* ==============================TICKET SUMMARY====================================== */}
               </div>
             </div>

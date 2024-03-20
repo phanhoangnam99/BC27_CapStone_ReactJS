@@ -19,10 +19,21 @@ export const setFilmToLS = (film) => {
   localStorage.setItem('film', JSON.stringify(film))
 }
 export const getFilmFromLS = () => {
+  const result = localStorage.getItem('film')
+  if (result) {
+    return JSON.parse(result)
+  }
+  return null
+}
 
- const result =  localStorage.getItem('film')
- if(result){
-  return JSON.parse(result)
- }
- return null
+export const getUserFromLS = () => {
+  const result = localStorage.getItem('user')
+  if (result) {
+    return JSON.parse(result)
+  }
+  return null
+}
+
+export const setUserToLS = (user) => {
+  localStorage.setItem('user', JSON.stringify(user))
 }

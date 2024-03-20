@@ -84,7 +84,7 @@ const Login = () => {
   }
 
   return (
-    <>
+    <div className='h-screen'>
       <Content
         style={{
           position: 'relative',
@@ -92,10 +92,12 @@ const Login = () => {
           maxWidth: '444px',
           background: '#fff',
           margin: '0 auto',
-          borderRadius: '5px'
+          borderRadius: '5px',
+display:'flex'
         }}
+className='flex-col items-center '
       >
-        <div className='flex justify-center'>
+        <div className='flex justify-center '>
           {/* <Avatar  style={{ marginTop: '20px', backgroundColor: 'rgb(245, 106, 0)' }} icon={<UserOutlined />} /> */}
           <svg
             className=' mt-5 h-12 w-12 p-1  bg-[orange] rounded-full'
@@ -115,6 +117,7 @@ const Login = () => {
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
           autoComplete='off'
+className='w-[80%]'
         >
           <Form.Item
             style={{ justifyContent: 'center' }}
@@ -132,13 +135,22 @@ const Login = () => {
             <Input.Password style={{ height: '50px' }} placeholder='Mật khẩu' />
           </Form.Item>
 
-          <Form.Item name='remember' valuePropName='checked' wrapperCol={{ span: 16 }}>
+          <Form.Item
+            name='remember'
+            valuePropName='checked'
+            wrapperCol={{ span: 16 }}
+          >
             <Checkbox>Nhớ tài khoản</Checkbox>
           </Form.Item>
 
           <Form.Item wrapperCol={{ span: 16 }}>
             <Button
-              style={{ background: '#fb4226', color: '#fff', marginBottom: '20px', width: '100%' }}
+              style={{
+                background: '#fb4226',
+                color: '#fff',
+                marginBottom: '20px',
+                width: '100%'
+              }}
               htmlType='submit'
             >
               Đăng nhập
@@ -148,14 +160,18 @@ const Login = () => {
         <div className='flex justify-end'>
           <Link
             to='/register'
-            style={{ marginRight: '10px', marginBottom: '10px', color: 'blue', textDecoration: 'underline' }}
-          
+            style={{
+              marginRight: '10px',
+              marginBottom: '10px',
+              color: 'blue',
+              textDecoration: 'underline'
+            }}
           >
             Bạn chưa có tài khoản ? Đăng ký ngay
           </Link>
         </div>
       </Content>
-    </>
+    </div>
   )
 }
 

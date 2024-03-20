@@ -301,7 +301,7 @@ const Cinema = () => {
                       data-nimg={1}
                       className=' rounded-lg md:rounded md:w-full w-full h-[232px] md:h-[215px] lg:h-[300px] xl:h-full max-h-[400px] group-hover:md:scale-105 transition-all duration-300 object-fill  duration-500 ease-in-out group-hover:opacity-100
   scale-100 blur-0 grayscale-0)'
-                      src={`${getReview?.[0]?.imageLandscape}`}
+                      src={`https://galaxycine.vn${getReview?.[0]?.imageLandscape}`}
                       style={{ color: 'transparent' }}
                     />
                   </a>
@@ -338,7 +338,7 @@ const Cinema = () => {
                               data-nimg={1}
                               className='rounded-lg md:rounded md:w-[195px] md:h-full w-[120px] h-[75px] group-hover:md:scale-105 transition-all duration-300 object-cover object-cover duration-500 ease-in-out group-hover:opacity-100
 scale-100 blur-0 grayscale-0)'
-                              src={`${review.imageLandscape}`}
+                              src={`https://galaxycine.vn${review.imageLandscape}`}
                               style={{ color: 'transparent' }}
                             />
                           </a>
@@ -371,7 +371,10 @@ scale-100 blur-0 grayscale-0)'
             <div className='grid md:grid-cols-2 md:gap-x-6 gap-4'>
               <article className='flex flex-col gap-y-4'>
                 <aside className='max-h-[100%] group transition-all duration-300 ease-in-out md:hover:text-blue-10'>
-                  <a className='h-full block' href={`https://galaxycine.vn/movie-blog/${getFilmNews?.[0].slug}`}>
+                  <a
+                    className='h-full block'
+                    href={`https://galaxycine.vn/movie-blog/${getFilmNews?.[0].slug}`}
+                  >
                     <img
                       alt={`${getFilmNews?.[0].name}`}
                       loading='lazy'
@@ -381,7 +384,7 @@ scale-100 blur-0 grayscale-0)'
                       data-nimg={1}
                       className='  rounded-lg md:rounded md:w-full w-full h-[232px] md:h-[215px] lg:h-[300px] xl:h-full max-h-[400px] group-hover:md:scale-105 transition-all duration-300 object-cover object-cover duration-500 ease-in-out group-hover:opacity-100
 scale-100 blur-0 grayscale-0)'
-                      src={`${getFilmNews?.[0].imageLandscape}`}
+                      src={`https://galaxycine.vn${getFilmNews?.[0].imageLandscape}`}
                       style={{ color: 'transparent' }}
                     />
                   </a>
@@ -404,7 +407,10 @@ scale-100 blur-0 grayscale-0)'
                           key={news.name}
                           className='flex gap-x-4 w-full max-h-[80px] md:max-h-[123px] group transition-all duration-300 ease-in-out md:hover:text-blue-10'
                         >
-                          <a className='w-[30%] md:w-[35%]' href={`https://galaxycine.vn/movie-blog/${news.slug}`}>
+                          <a
+                            className='w-[30%] md:w-[35%]'
+                            href={`https://galaxycine.vn/movie-blog/${news.slug}`}
+                          >
                             <img
                               alt={`${news.name}`}
                               loading='lazy'
@@ -414,7 +420,7 @@ scale-100 blur-0 grayscale-0)'
                               data-nimg={1}
                               className='rounded-lg md:rounded md:w-[195px] md:h-full w-[120px] h-[75px] group-hover:md:scale-105 transition-all duration-300 object-cover object-cover duration-500 ease-in-out group-hover:opacity-100
    scale-100 blur-0 grayscale-0)'
-                              src={`${news.imageLandscape}`}
+                              src={`https://galaxycine.vn${news.imageLandscape}`}
                               style={{ color: 'transparent' }}
                             />
                           </a>
@@ -433,7 +439,6 @@ scale-100 blur-0 grayscale-0)'
                       )
                   )}
               </article>
-              
             </div>
           </div>
         </div>

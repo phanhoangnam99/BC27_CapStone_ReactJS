@@ -166,6 +166,16 @@ const movieAPI = {
     } catch (error) {
       console.log(error)
     }
+  },
+
+  getScheduleDetail: (scheduleId) => {
+    return axiosClient.get('QuanLyDatVe/LayDanhSachPhongVe', {
+      params: { MaLichChieu: scheduleId }
+    })
+  },
+
+  ticketBooking: (data) => {
+    return axiosClient.post('QuanLyDatVe/DatVe', data)
   }
 }
 

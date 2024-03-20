@@ -10,6 +10,7 @@ import Success from 'modules/Ticket/Success'
 import FilmDetail from 'modules/Home/components/FilmDetail'
 import Purchase from 'modules/Home/components/Purchase'
 import Login from 'modules/Authentication/pages/Login'
+import Profile from 'modules/Authentication/pages/Profile'
 const User = lazy(() => import('modules/AdminMovie/pages/User'))
 
 // Không import trực tiếp các pages, vì nó sẽ được tải tất cả ở lần đầu tiên
@@ -77,6 +78,7 @@ function App() {
             <Route path='login' element={<Login />} />
             <Route path='register' element={<Register />} />
           </Route>
+          <Route path='profile' element={<Profile />} />
         </Route>
       </Routes>
     </Suspense>

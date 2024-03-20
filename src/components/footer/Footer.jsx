@@ -4,9 +4,14 @@ import React, { useEffect, useState } from 'react'
 export default function Footer() {
   const [promoHeight, setPromoHeight] = useState('null')
   useEffect(() => {
-    const getPromoHeight = String(document.getElementById('AppIntroduction')?.getBoundingClientRect().height)
+    const getPromoHeight = String(
+      document.getElementById('AppIntroduction')?.getBoundingClientRect().height
+    )
     window.addEventListener('resize', (event) => {
-      const getPromoHeight = String(document.getElementById('AppIntroduction')?.getBoundingClientRect().height)
+      const getPromoHeight = String(
+        document.getElementById('AppIntroduction')?.getBoundingClientRect()
+          .height
+      )
       setPromoHeight(getPromoHeight)
     })
     setPromoHeight(getPromoHeight)
@@ -15,12 +20,18 @@ export default function Footer() {
   const URL = 'https://galaxycine.vn'
 
   return (
-    <footer id='footer' style={{ marginTop: `${promoHeight}px` }} className='max-w-full'>
+    <footer
+      id='footer'
+      style={{ marginTop: `${promoHeight}px` }}
+      className='max-w-full'
+    >
       <div className=' bg-[#333] absolute w-[100vw] max-w-[100%] transform left-[50%] -translate-x-1/2'>
         <div className='container'>
           <div className='grid grid-cols-2 gap-y-4 md:gap-y-0 gap-7  sm:grid-cols-2 md:grid-cols-4 xl:grid-cols-4 py-9'>
             <div>
-              <h3 className='mb-3 md:mb-6 text-sm uppercase text-white font-bold'>giới thiệu</h3>
+              <h3 className='mb-3 md:mb-6 text-sm uppercase text-white font-bold'>
+                giới thiệu
+              </h3>
               <ul>
                 <li className=' '>
                   <a
@@ -57,7 +68,9 @@ export default function Footer() {
               </ul>
             </div>
             <div>
-              <h3 className='mb-3 md:mb-6 text-sm uppercase text-white font-bold'>góc điện ảnh</h3>
+              <h3 className='mb-3 md:mb-6 text-sm uppercase text-white font-bold'>
+                góc điện ảnh
+              </h3>
               <ul className='text-[#d0d0d0]'>
                 <li className=' '>
                   <a
@@ -94,7 +107,9 @@ export default function Footer() {
               </ul>
             </div>
             <div>
-              <h3 className='mb-3 md:mb-6 text-sm uppercase text-white font-bold'>hỗ trợ</h3>
+              <h3 className='mb-3 md:mb-6 text-sm uppercase text-white font-bold'>
+                hỗ trợ
+              </h3>
               <ul>
                 <li className=' '>
                   <a
@@ -141,7 +156,10 @@ export default function Footer() {
             <div>
               <ul>
                 <li className=' '>
-                  <img alt='footer-logo' src={`${URL}/_next/static/media/galaxy-logo-footer.7a918263.svg`}></img>
+                  <img
+                    alt='footer-logo'
+                    src={`${URL}/_next/static/media/galaxy-logo-footer.7a918263.svg`}
+                  ></img>
                 </li>
 
                 <ul className='flex mt-4 gap-3'>
@@ -165,7 +183,11 @@ export default function Footer() {
                     </a>
                   </li>
                   <li>
-                    <a href='https://www.youtube.com/user/galaxymovies' target='_blank' rel='noreferrer'>
+                    <a
+                      href='https://www.youtube.com/user/galaxymovies'
+                      target='_blank'
+                      rel='noreferrer'
+                    >
                       <svg
                         aria-hidden='true'
                         focusable='false'
@@ -184,7 +206,11 @@ export default function Footer() {
                     </a>
                   </li>
                   <li>
-                    <a href='https://www.instagram.com/galaxycinema' target='_blank' rel='noreferrer'>
+                    <a
+                      href='https://www.instagram.com/galaxycinema'
+                      target='_blank'
+                      rel='noreferrer'
+                    >
                       <svg
                         aria-hidden='true'
                         focusable='false'
@@ -209,7 +235,7 @@ export default function Footer() {
                   '
                   >
                     <img
-                      src={`${URL}/_next/image/?url=%2F_next%2Fstatic%2Fmedia%2Fglx_trade.61f6c35c.png&w=384&q=75`}
+                      src={`https://www.galaxycine.vn/_next/static/media/glx_trade.61f6c35c.png`}
                       alt=''
                       className='h-12 w-32'
                     />
@@ -224,13 +250,19 @@ export default function Footer() {
           mt-3'
           >
             <div className='my-auto'>
-              <img src={`${URL}/_next/static/media/galaxy-logo-footer.7a918263.svg`} alt='' />
+              <img
+                src={`${URL}/_next/static/media/galaxy-logo-footer.7a918263.svg`}
+                alt=''
+              />
             </div>
             <div className='pl-3 pr-2'>
-              <div className='uppercase text-[#d0d0d0]'>công ty cổ phần phim thiên ngân</div>
+              <div className='uppercase text-[#d0d0d0]'>
+                công ty cổ phần phim thiên ngân
+              </div>
               <div className='text-xs text-[#8d8d8d] '>
                 <p className='leading-6'>
-                  Toà nhà Bitexco Nam Long, 63A Võ Văn Tần, Phường 6, Quận 3, Tp. Hồ Chí Minh, Việt Nam
+                  Toà nhà Bitexco Nam Long, 63A Võ Văn Tần, Phường 6, Quận 3,
+                  Tp. Hồ Chí Minh, Việt Nam
                   <br />
                   <svg
                     aria-hidden='true'
@@ -271,7 +303,10 @@ export default function Footer() {
                     />
                   </svg>
                   :
-                  <a className='hover:text-[#FD841F]  text-[#8d8d8d] transition-all duration-300' href='tel:19002224'>
+                  <a
+                    className='hover:text-[#FD841F]  text-[#8d8d8d] transition-all duration-300'
+                    href='tel:19002224'
+                  >
                     19002224 (9:00 - 22:00)
                   </a>{' '}
                   {/* */}-{' '}

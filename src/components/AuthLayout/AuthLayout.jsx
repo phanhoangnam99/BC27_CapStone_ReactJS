@@ -1,7 +1,7 @@
-import React from "react";
-import {  Layout } from "antd";
-import { Content } from "antd/lib/layout/layout";
-import BackGround from "./BackGround";
+import React from 'react'
+import { Layout } from 'antd'
+import BackGround from './BackGround'
+import { Outlet } from 'react-router-dom'
 
 const AuthLayout = () => {
   return (
@@ -14,13 +14,11 @@ const AuthLayout = () => {
     //   </Col>
     // </Row>
     <Layout>
-      
-      <Content> 
-        <BackGround/>
-
-      </Content>
+      <BackGround>
+        <Outlet />
+      </BackGround>
     </Layout>
-  );
-};
+  )
+}
 
-export default AuthLayout;
+export default AuthLayout

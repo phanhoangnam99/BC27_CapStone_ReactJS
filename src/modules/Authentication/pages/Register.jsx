@@ -66,7 +66,8 @@ const Register = () => {
 
 
   return (
-    <>
+    <div className='h-screen'>
+
       <Content style={{
         position: "relative",
         top: "100px",
@@ -153,7 +154,7 @@ const Register = () => {
           </Form.Item>
         </Form>
       </Content>
-    </>
+    </div>
   );
 };
 

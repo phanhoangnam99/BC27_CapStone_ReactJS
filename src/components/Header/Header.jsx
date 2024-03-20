@@ -87,7 +87,7 @@ const Header = () => {
   const { data: movies } = useRequest(() => movieAPI?.getMovies())
   const arrowRef = useRef(null)
 
-  const [isOpen, setIsOpen] = useState(true)
+  const [isOpen, setIsOpen] = useState(false)
   const [open, setOpen] = useState(false)
   const [openAccordion, setOpenAccordion] = useState(0)
 
@@ -541,7 +541,10 @@ scale-100 blur-0 grayscale-0)'
                         Ưu đãi
                       </a>
                     </li>
-                    <li className='text-sm text-black hover:text-[#f26b38] hover:pl-0.5 hover:border-l-4 capitalize hover:border-[#fd841f] hover:bg-[#fb770b1a] transition-all duration-300'>
+                    <li
+                      className='text-sm text-b
+lack hover:text-[#f26b38] hover:pl-0.5 hover:border-l-4 capitalize hover:border-[#fd841f] hover:bg-[#fb770b1a] transition-all duration-300'
+                    >
                       <a
                         className='block py-2 text-black hover:text-orange'
                         href='/dien-vien/'
@@ -812,12 +815,25 @@ scale-100 blur-0 grayscale-0)'
                                     Admin Page
                                   </p>
                                 </Link>
-                                <hr
-                                  className='my-2 border border-1 border-solid border-blue-gray-50'
-                                  role='menuitem'
-                                />
                               </>
                             )}
+
+                            <>
+                              <Link
+                                to='profile'
+                                role='menuitem'
+                                className='flex  w-full cursor-pointer select-none items-center gap-2 rounded-md px-3 pt-[9px] pb-2 text-start leading-tight outline-none transition-all hover:bg-blue-gray-50 hover:bg-opacity-80 hover:text-blue-gray-900 focus:bg-blue-gray-50 focus:bg-opacity-80 focus:text-blue-gray-900 active:bg-blue-gray-50 active:bg-opacity-80 active:text-blue-gray-900'
+                              >
+                                <i className='fa-regular fa-user w-6 h-6 flex justify-center items-center' />
+                                <p className='block font-sans text-sm antialiased font-medium leading-normal text-inherit'>
+                                  Profile
+                                </p>
+                              </Link>
+                              <hr
+                                className='my-2 border border-1 border-solid border-blue-gray-50'
+                                role='menuitem'
+                              />
+                            </>
                             <button
                               onClick={async () => {
                                 await dispatch(logout())
@@ -957,7 +973,10 @@ scale-100 blur-0 grayscale-0)'
                 <AccordionBody>
                   <div className='mx-5'>
                     <div>
-                      <a href='' className='text-black hover:text-orange'>
+                      <a
+                        href=''
+                        className=' whitespace-nowrap text-black hover:text-orange'
+                      >
                         Phim đang chiếu
                       </a>
                     </div>

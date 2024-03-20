@@ -18,17 +18,21 @@ body {
   width: 100%;
 }
 
-div.slick-slide.slick-cloned{
-  width:auto;
-  height:auto;
+div.slick-slide.slick-cloned {
+  width: auto;
+  height: auto;
 }
 
-#\:r44\:{
-  padding:0
+#\:r44\: {
+  padding: 0;
 }
 
 .ant-avatar.ant-avatar-circle.ant-avatar-icon {
-  display:flex;
-  justify-content:center;
-  align-items:center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loading {
+  filter: blur(200px);
 }

@@ -14,7 +14,8 @@ export default function TicketSummary({
   total,
   choosenFood,
   foodTotal,
-  cinemaInfo
+
+  scheduleDetail
 }) {
   const { film } = useContext(AppContext)
   const { data: filmDetail } = useQuery({
@@ -22,35 +23,25 @@ export default function TicketSummary({
 
     queryFn: () => movieAPI.getFilmDetail(film.maPhim)
   })
-  // const queryClient = useQueryClient()
-  const { data: scheduleDetail } = useQuery({
-    queryKey: ['scheduleDetail', film.maPhim],
 
-    queryFn: () => movieAPI.getLichChieu(film.maPhim)
-  })
+  // let matchingLichChieu
 
-  let scheduleDetailVar = {
-    /* your scheduleDetail object */
-  }
+  // if (scheduleDetail) {
+  //   for (let heThongRap of scheduleDetail.heThongRapChieu) {
+  //     for (let cumRap of heThongRap.cumRapChieu) {
+  //       let found = cumRap.lichChieuPhim.find(
+  //         (lichChieu) => lichChieu.maLichChieu === film.maPhim
+  //       )
+  //       if (found) {
+  //         matchingLichChieu = cumRap
+  //         break
+  //       }
+  //     }
+  //     if (matchingLichChieu) break
+  //   }
+  // }
 
-  let matchingLichChieu
-
-  if (scheduleDetail) {
-    for (let heThongRap of scheduleDetail.heThongRapChieu) {
-      for (let cumRap of heThongRap.cumRapChieu) {
-        let found = cumRap.lichChieuPhim.find(
-          (lichChieu) => lichChieu.maLichChieu === film.maPhim
-        )
-        if (found) {
-          matchingLichChieu = cumRap
-          break
-        }
-      }
-      if (matchingLichChieu) break
-    }
-  }
-
-  console.log(matchingLichChieu)
+  // console.log(matchingLichChieu)
   return (
     <div className='col-span-1 xl:pl-4 xl:order-none order-first py-4'>
       <div className='booking__summary md:mb-4'>
@@ -100,16 +91,30 @@ grayscale-[90%])'
             {' '}
             <div>
               <div className='xl:mt-4 text-sm xl:text-base'>
-                <strong>Galaxy Quang Trung</strong>
+                <strong>
+                  Galaxy {`${scheduleDetail?.tenCumRap?.split('-')[1]}`}
+                </strong>
                 <span> - </span>
-                <span className='text-sm xl:text-base'>RAP 7</span>
+                <span className='text-sm xl:text-base'>
+                  {scheduleDetail?.tenRap}
+                </span>
               </div>
               <div className='xl:mt-2 text-sm xl:text-base'>
                 <span>Suất: </span>
-                <strong>13:45</strong>
+                <strong>
+                  {new Date(scheduleDetail?.ngayChieuGioChieu)
+                    .toLocaleTimeString('it-IT')
+                    .slice(0, 5)}
+                </strong>{' '}
                 <span> - </span>
-                <span className='capitalize text-sm'>
-                  thứ năm, <strong>30/11/2023</strong>
+                <span className='capitalize text-sm xl:test-base'>
+                  {new Date(
+                    scheduleDetail?.ngayChieuGioChieu?.replace('T', ' ') + 'Z'
+                  ).toLocaleString('vi-VN', {
+                    timeZone: 'UTC',
+                    weekday: 'long'
+                  })}
+                  , <strong>{scheduleDetail?.ngayChieu}</strong>
                 </span>
               </div>
             </div>
@@ -165,7 +170,9 @@ grayscale-[90%])'
         </div>
         <div className='mt-8 xl:flex hidden'>
           <button
-            className='w-1/2 mr-2 py-2 text-orange'
+            className={`w-1/2 mr-2 py-2 text-orange  ${
+              step === 2 ? `hidden` : ``
+            }`}
             onClick={() => setStep(step - 1)}
           >
             <span>Quay lại</span>
@@ -179,7 +186,7 @@ grayscale-[90%])'
         </div>
       </div>
       <div className='fixed bottom-0 left-0 w-full z-100 bg-white xl:hidden transition-all duration-500 ease-in-out overflow-hidden max-h-[90vh] h-max  min-h-max pb-12 pt-2 border border-[#DFDFDF] rounded-t-xl opacity-100'>
-        <div className='rounded opacity-100  w-full'>
+        <div className='rounded opacity-100  w-full h-[10px]'>
           <img
             alt='Icon show'
             loading='lazy'
@@ -188,7 +195,7 @@ grayscale-[90%])'
             decoding='async'
             data-nimg={1}
             className='absolute -top-[6%] left-[50%] -translate-x-[50%] brightness-90 grayscale-[20%] z-100'
-            src='/_next/image/?url=%2F_next%2Fstatic%2Fmedia%2Fdelete.addc939e.png&w=96&q=75'
+            src='	https://www.galaxycine.vn/_next/static/media/delete.addc939e.png'
             style={{
               color: 'transparent'
             }}
@@ -208,7 +215,9 @@ grayscale-[90%])'
             <div className='text-right fixed bottom-0 right-4 h-14 flex items-center'>
               <div>
                 <button
-                  className='w-[65px] h-10 py-2 bg-transparent text-orange text-sm rounded-md'
+                  className={`w-[65px] h-10 py-2 bg-transparent text-orange text-sm rounded-md ${
+                    step === 2 ? `hidden` : ``
+                  }`}
                   onClick={() => setStep(step - 1)}
                 >
                   <span>Quay lại</span>
