@@ -2,7 +2,7 @@
 import movieAPI from 'apis/movieAPI'
 import Trailer from 'components/Trailer'
 import useRequest from 'hooks/useRequest'
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { getIdFromNameId, setFilmToLS } from 'utils/utils'
 import {
@@ -16,8 +16,20 @@ import { Button } from 'antd'
 import path from 'constants/path'
 import { AppContext } from 'contexts/app.context'
 import { useQuery } from '@tanstack/react-query'
+import { useSelector } from 'react-redux'
+
+import {
+  Dialog,
+  DialogHeader,
+  DialogBody,
+  DialogFooter,
+  Typography
+} from '@material-tailwind/react'
 
 export default function FilmDetail() {
+  const [open, setOpen] = useState(false)
+  const handleOpen = () => setOpen(!open)
+
   const { setFilm } = useContext(AppContext)
   const { filmId } = useParams()
   const id = getIdFromNameId(filmId)
@@ -30,7 +42,6 @@ export default function FilmDetail() {
 
     queryFn: () => movieAPI.getFilmDetail(id)
   })
-
 
   // const { data: movieSchedule } = useRequest(() => {
   //   return movieAPI.getSchedule(id)
@@ -57,6 +68,8 @@ export default function FilmDetail() {
   setFilmToLS(movie)
   setFilm(movie)
 
+  const { user } = useSelector((state) => state.auth)
+
   const data = []
   movieSchedule?.heThongRapChieu?.forEach((system) => {
     if (system?.maHeThongRap === 'Galaxy') {
@@ -68,12 +81,50 @@ export default function FilmDetail() {
             children: (
               <>
                 <h3>{branch?.tenCumRap}</h3>
-                <Link
-                  to={`${path.home}purchase/${schedule.maLichChieu}`}
-                  className='mr-4 my-4 bg-transparent hover:!bg-blue-800  font-semibold transition-all duration-500 ease-in-out hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded'
-                >
-                  {getTime(schedule.ngayChieuGioChieu)}
-                </Link>
+                {user ? (
+                  <Link
+                    to={`${path.home}purchase/${schedule.maLichChieu}`}
+                    className='mr-4  bg-transparent hover:!bg-blue-800  font-semibold transition-all duration-500 ease-in-out hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded'
+                  >
+                    {getTime(schedule.ngayChieuGioChieu)}
+                  </Link>
+                ) : (
+                  <>
+                    {' '}
+                    <button
+                      onClick={handleOpen}
+                      className='mr-4 bg-transparent hover:!bg-blue-800  font-semibold transition-all duration-500 ease-in-out hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded'
+                    >
+                      {' '}
+                      {getTime(schedule.ngayChieuGioChieu)}
+                    </button>
+                    <Dialog open={open} handler={handleOpen}>
+                      <DialogBody
+                        divider
+                        className='grid place-items-center gap-4'
+                      >
+                        <svg
+                          xmlns='http://www.w3.org/2000/svg'
+                          viewBox='0 0 24 24'
+                          fill='currentColor'
+                          className='h-16 w-16 text-red-500'
+                        >
+                          <path
+                            fillRule='evenodd'
+                            d='M5.25 9a6.75 6.75 0 0113.5 0v.75c0 2.123.8 4.057 2.118 5.52a.75.75 0 01-.297 1.206c-1.544.57-3.16.99-4.831 1.243a3.75 3.75 0 11-7.48 0 24.585 24.585 0 01-4.831-1.244.75.75 0 01-.298-1.205A8.217 8.217 0 005.25 9.75V9zm4.502 8.9a2.25 2.25 0 104.496 0 25.057 25.057 0 01-4.496 0z'
+                            clipRule='evenodd'
+                          />
+                        </svg>
+                        <Typography color='red' variant='h4'>
+                          Bạn cần đăng nhập để tiếp tục
+                        </Typography>
+                        <Typography className='text-center font-normal'>
+                          <Link to={`${path.home}login`}>Đăng nhập ngay</Link>
+                        </Typography>
+                      </DialogBody>
+                    </Dialog>
+                  </>
+                )}
               </>
             )
           })

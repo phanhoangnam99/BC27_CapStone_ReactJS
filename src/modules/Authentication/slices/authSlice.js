@@ -4,7 +4,7 @@ import authAPI from 'apis/authAPI'
 const initialState = {
   user: JSON.parse(localStorage.getItem('user')) || null,
   isLoading: false,
-  error: null
+  error: null,
 }
 
 export const login = createAsyncThunk(
@@ -36,8 +36,11 @@ const authSlice = createSlice({
     logout: (state) => {
       localStorage.removeItem('user')
       state.user = null
-    }
+    },
+
+   
   },
+
   extraReducers: (builder) => {
     builder.addCase(login.fulfilled, (state, { payload }) => {
       state.user = payload
@@ -45,6 +48,6 @@ const authSlice = createSlice({
   }
 })
 
-export const { logout } = authSlice.actions
+export const { logout, setIsLogin } = authSlice.actions
 
 export default authSlice.reducer

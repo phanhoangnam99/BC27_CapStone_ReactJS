@@ -26,6 +26,7 @@ import {
   QueryClientProvider
 } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import { ToastContainer } from 'react-toastify'
 
 const theme = {
   accordion: {
@@ -264,6 +265,7 @@ root.render(
           <QueryClientProvider client={queryClient}>
             <AppProvider>
               <App />
+              <ToastContainer autoClose={2000} />=
             </AppProvider>
 
             <ReactQueryDevtools initialIsOpen={false} />

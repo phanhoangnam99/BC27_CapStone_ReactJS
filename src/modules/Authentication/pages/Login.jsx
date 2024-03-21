@@ -5,11 +5,12 @@ import { Avatar, Button, Checkbox, Form, Input, notification } from 'antd'
 import { useForm } from 'react-hook-form'
 import { Link, Navigate, useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
-import { login } from '../slices/authSlice'
+import { login, setIsLogin } from '../slices/authSlice'
 import { Content } from 'antd/lib/layout/layout'
 import './style.css'
 import { UserOutlined } from '@ant-design/icons'
-import React from 'react'
+import React, { useEffect } from 'react'
+import { toast } from 'react-toastify'
 
 const Login = () => {
   const {
@@ -25,7 +26,7 @@ const Login = () => {
 
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const { user } = useSelector((state) => state.auth)
+  let { user, isLogin } = useSelector((state) => state.auth)
 
   // const { data: handleLogin, isLoading } = useRequest(
   //   (values) => authAPI.login(values),
@@ -51,6 +52,7 @@ const Login = () => {
   //   }
   // };
 
+ 
   const onSubmit = async (values) => {
     try {
       // chờ cho action login thành công
@@ -93,9 +95,9 @@ const Login = () => {
           background: '#fff',
           margin: '0 auto',
           borderRadius: '5px',
-display:'flex'
+          display: 'flex'
         }}
-className='flex-col items-center '
+        className='flex-col items-center '
       >
         <div className='flex justify-center '>
           {/* <Avatar  style={{ marginTop: '20px', backgroundColor: 'rgb(245, 106, 0)' }} icon={<UserOutlined />} /> */}
@@ -117,7 +119,7 @@ className='flex-col items-center '
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
           autoComplete='off'
-className='w-[80%]'
+          className='w-[80%]'
         >
           <Form.Item
             style={{ justifyContent: 'center' }}

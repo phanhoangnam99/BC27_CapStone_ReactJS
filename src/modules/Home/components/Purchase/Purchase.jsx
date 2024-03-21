@@ -1,5 +1,6 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable no-unused-vars */
-import React, { useContext, useEffect, useMemo, useState } from 'react'
+import React, { useContext, useEffect, useMemo, useRef, useState } from 'react'
 import {
   CogIcon,
   UserIcon,
@@ -10,13 +11,19 @@ import { Stepper, Step, Button, Typography } from '@material-tailwind/react'
 import { AppContext } from 'contexts/app.context'
 import TicketSummary from '../TicketSummary'
 import QuantityController from 'components/QuantityController'
-import { useNavigate, useParams } from 'react-router-dom'
+import { Navigate, useNavigate, useParams, useLocation } from 'react-router-dom'
 import useRequest from 'hooks/useRequest'
 import movieAPI from 'apis/movieAPI'
 import moment from 'moment'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { set } from 'react-hook-form'
 import { notification } from 'antd'
+import { useDispatch, useSelector } from 'react-redux'
+import { toast } from 'react-toastify'
+
+import 'react-toastify/dist/ReactToastify.css'
+import { toastLoginError } from 'modules/Authentication/pages/Login'
+import { setIsLogin } from 'modules/Authentication/slices/authSlice'
 
 export default function Purchase() {
   let foodData = [
@@ -100,7 +107,10 @@ export default function Purchase() {
   const navigate = useNavigate()
   const [loading, setLoading] = useState(true)
 
+  const { user } = useSelector((state) => state.auth)
 
+  const location = useLocation()
+  const dispatch = useDispatch()
   const { data: movieSchedule, isSuccess: movieSchedulePending } = useRequest(
     () => {
       return movieAPI.getSchedule(film.maPhim)
@@ -366,6 +376,10 @@ ${
     }))
   }, [movieSchedule, scheduleId, setCinemaInfo, scheduleDetail])
 
+  if (!user) {
+    notification.error({ message: 'Bạn cần đăng nhập để tiếp tục' })
+    return <Navigate to='/login' />
+  }
   return (
     <div className='md:container loading' id='body-purchase'>
       {/* ==================================STEP 2======================== */}
