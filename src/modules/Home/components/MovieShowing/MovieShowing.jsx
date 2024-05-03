@@ -16,7 +16,6 @@ export default function MovieShowing() {
   // useNavigate là một hook dùng để điều hướng url
   const navigate = useNavigate()
 
-  console.log('render')
   const [toggleBtn, setToggleBtn] = useState(true)
   const [hideBtn, setHideBtn] = useState(false)
   const [scrollY, setScrollY] = useState(0)
@@ -42,8 +41,7 @@ export default function MovieShowing() {
 
   const toggleShowMore = () => {
     // console.log(moreFilmEl)
-    console.log(toggleBtnEl)
-    console.log(hideBtnEl)
+   
     if (toggleBtn) {
       setScrollY(window.scrollY)
     } else if (hideBtn) {

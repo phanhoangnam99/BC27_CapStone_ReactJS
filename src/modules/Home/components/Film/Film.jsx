@@ -6,12 +6,12 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { generateNameId } from 'utils/utils'
 
-export default function Film({ movie, key: index , }) {
+export default function Film({ movie, key: index }) {
   return (
     movie && (
       <div className='col-span-1 group    ' key={index}>
         <div className='max-w-sm  h-full'>
-          <div className='card-header relative h-auto shadow-lg group  '>
+          <div className='card-header relative shadow-lg group w-[190px] !h-[300px] '>
             <Link
               to={`${path.home}dat-ve/${generateNameId({
                 name: `${movie.tenPhim}`,
@@ -19,7 +19,7 @@ export default function Film({ movie, key: index , }) {
               })}`}
             >
               <img
-                className='w-full h-auto rounded-lg   group-hover:md:scale-105 transition-all duration-500 object-cover  ease-in-out group-hover:opacity-100
+                className='w-full h-full object-fill rounded-lg   group-hover:md:scale-105 transition-all duration-500 object-cover  ease-in-out group-hover:opacity-100
 scale-100 blur-0 grayscale-0)'
                 src={`${movie.hinhAnh}`}
                 alt={`${movie.biDanh}`}
@@ -45,14 +45,13 @@ scale-100 blur-0 grayscale-0)'
                       className='mr-2 h-5 w-5'
                       src='https://galaxycine.vn/_next/static/media/Vector-1.319a0d2b.svg'
                       style={{
-                        color: 'transparent',
-                      
+                        color: 'transparent'
                       }}
                     />
                     Mua vé
                   </button>
 
-                  <Link onClick={(event) => event.preventDefault()} >
+                  <Link onClick={(event) => event.preventDefault()}>
                     <Trailer url={movie.trailer}></Trailer>
                   </Link>
                 </div>

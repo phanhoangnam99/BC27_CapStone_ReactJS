@@ -268,9 +268,9 @@ const Header = () => {
                                 key={movie.biDanh}
                                 className='text-sm text-black py-2 transition-all duration-300'
                               >
-                                <div className='inline-block whitespace-nowrap relative max-w-full w-[140px] h-[200px]'>
-                                  <div className='inline-block cursor-pointer rounded overflow-hidden card__movies max-w-full false '>
-                                    <div className='object-cover rounded relative card__img max-w-full'>
+                                <div className='inline-block whitespace-nowrap relative max-w-full w-[140px] !h-[200px]'>
+                                  <div className='inline-block cursor-pointer rounded overflow-hidden card__movies max-w-full h-full false '>
+                                    <div className='object-cover rounded relative card__img max-w-full h-full'>
                                       <div className='absolute hidden md:block w-full h-full z-10 cursor-pointer bg-[#00000080] transition-all duration-300 ease-in-out opacity-0 hover:!opacity-100'>
                                         <div className='card__hover__content flex flex-col justify-center items-center w-full h-full'>
                                           <Link
@@ -306,7 +306,7 @@ const Header = () => {
                                           height={200}
                                           decoding='async'
                                           data-nimg={1}
-                                          className='undefined object-cover duration-500 ease-in-out group-hover:opacity-100
+                                          className='undefined object-fill h-full duration-500 ease-in-out group-hover:opacity-100
 scale-100 blur-0 grayscale-0)'
                                           src={`${movie?.hinhAnh}`}
                                           style={{ color: 'transparent' }}

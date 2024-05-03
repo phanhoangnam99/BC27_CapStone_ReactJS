@@ -1,5 +1,19 @@
 import axiosClient from './axiosClient'
 
+const CORS = 'https://cors-anywhere-nd3f.onrender.com'
+
+let galaxy
+
+async function getGalaxy() {
+  const meo = await fetch(
+    `https://react-native-course-a1f50-default-rtdb.asia-southeast1.firebasedatabase.app/` +
+      'galaxy.json/'
+  )
+
+  const res = await meo.json()
+  galaxy = res['-NwspRUKYYjzqi8jNKLd']
+}
+
 var myHeaders = new Headers()
 myHeaders.append('Accept', 'application/json')
 myHeaders.append('Accept-Language', 'en-US,en;q=0.9')
@@ -26,7 +40,7 @@ const movieAPI = {
   getMovies: () => {
     return axiosClient.get('QuanLyPhim/LayDanhSachPhim', {
       params: {
-        maNhom: 'GP09'
+        maNhom: 'GP01'
       }
     })
   },
@@ -104,15 +118,21 @@ const movieAPI = {
 
   getMovieCorner: async (type, type2) => {
     try {
-      let apiUrl = `https://cors-anywhere-nd3f.onrender.com/https://www.galaxycine.vn/api/v2/mobile/content/post?&type[]=${type}&page=1&limit=4`
+      // let apiUrl = `${CORS}/https://www.galaxycine.vn/api/v2/mobile/content/post?&type[]=${type}&page=1&limit=4`
+
+      // if (type2) {
+      //   apiUrl += `&type[]=${type2}`
+      // }
+
+      await getGalaxy()
+      // const res = await fetch(apiUrl, requestOptions)
+      // const result = await res.json()
 
       if (type2) {
-        apiUrl += `&type[]=${type2}`
+        return galaxy.movieCorner.data.result
+      } else {
+        return galaxy.movieCorner2.data.result
       }
-
-      const res = await fetch(apiUrl, requestOptions)
-      const result = await res.json()
-      return result.data.result
     } catch (error) {
       console.log(error)
     }
@@ -120,7 +140,7 @@ const movieAPI = {
   getCinemaMobile: async () => {
     try {
       const res = await fetch(
-        'https://cors-anywhere-nd3f.onrender.com/https://www.galaxycine.vn/api/v2/mobile/cinemas',
+        `${CORS}/https://www.galaxycine.vn/api/v2/mobile/cinemas`,
         requestOptions
       )
       const cinemas = await res.json()
@@ -131,13 +151,18 @@ const movieAPI = {
   },
   getCommingMovies: async () => {
     try {
-      const res = await fetch(
-        `     
-        https://cors-anywhere-nd3f.onrender.com/https://www.galaxycine.vn/api/v2/mobile/movies/comming`,
-        requestOptions
-      )
-      const movies = await res.json()
-      return movies.data.result
+      await getGalaxy()
+
+      // const res = await fetch(
+      //   `
+      //  ${CORS}/https://www.galaxycine.vn/api/v2/mobile/movies/comming`,
+      //   requestOptions
+      // )
+
+      // const movies = await res.json()
+      // console.log(movies)
+
+      return galaxy.comming.data.result
     } catch (error) {
       console.log(error)
     }
@@ -157,7 +182,7 @@ const movieAPI = {
     try {
       const res = await fetch(
         `     
-        https://cors-anywhere-nd3f.onrender.com/https://www.galaxycine.vn/api/v2/mobile/concessions/cinema/3a9fe5b5-0f63-4889-aaae-6c1b76d7050d
+       ${CORS}/https://www.galaxycine.vn/api/v2/mobile/concessions/cinema/3a9fe5b5-0f63-4889-aaae-6c1b76d7050d
 `,
         requestOptions
       )
